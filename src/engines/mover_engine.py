@@ -1,5 +1,9 @@
 import chess
 import random
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from base_engine import BaseUCIEngine
 
 class MoverEngine(BaseUCIEngine):
