@@ -183,6 +183,17 @@ python scripts/random_engine.py
   - Simple but effective for casual play
   - Limited understanding of complex tactics
   - Thinks of every move as a it's to play doesn't think the opponent can make a move
+- **Good for**: Casual games and basic engine testing
+
+### 22. Strangler Engine
+- **Weakness Level**: ⭐ (Almost Medium)
+- **Strategy**: Gradually restricts opponent's mobility
+- **Characteristics**:
+  - Prioritizes moves that limit opponent's options
+  - Aims to control key squares and files
+  - Can lead to slow but steady advantages
+  - Effective against aggressive opponents
+- **Good for**: Testing against aggressive playstyles and learning positional control
 
 ## 🛠️ Technical Details
 
