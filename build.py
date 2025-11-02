@@ -58,7 +58,10 @@ def main():
         ("scripts/shuffle_engine.py", "shuffle_engine"),
         ("scripts/anti_positional_engine.py", "anti_positional_engine"),
         ("scripts/color_square_engine.py", "color_square_engine"),
-        ("scripts/opposite_color_square_engine.py", "opposite_color_square_engine")
+        ("scripts/opposite_color_square_engine.py", "opposite_color_square_engine"),
+        ("scripts/swarm_engine.py", "swarm_engine"),
+        ("scripts/runaway_engine.py", "runaway_engine"),
+        ("scripts/huddle_engine.py", "huddle_engine")
     ]
     
     successful_builds = 0

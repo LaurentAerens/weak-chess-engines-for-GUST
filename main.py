@@ -30,6 +30,9 @@ try:
     from engines.suicide_king_engine import SuicideKingEngine
     from engines.color_square_engine import ColorSquareEngine
     from engines.opposite_color_square_engine import OppositeColorSquareEngine
+    from engines.swarm_engine import SwarmEngine
+    from engines.huddle_engine import HuddleEngine
+    from engines.runaway_engine import RunawayEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -192,6 +195,7 @@ class EngineSelector(tk.Frame):
         self.on_engine_change = on_engine_change
         
         self.engines = {
+            "Huddle Engine (⭐⭐⭐⭐⭐)": HuddleEngine,
             "Random Engine (⭐⭐⭐⭐⭐)": RandomEngine,
             "Alphabetical Engine (⭐⭐⭐⭐)": AlphabeticalEngine,
             "Reverse Alphabetical (⭐⭐⭐⭐)": ReverseAlphabeticalEngine,
@@ -200,10 +204,12 @@ class EngineSelector(tk.Frame):
             "Suicide King (⭐⭐⭐⭐)": SuicideKingEngine,
             "Blunder Engine (⭐⭐⭐⭐)": BlunderEngine,
             "Color Square (⭐⭐⭐⭐)": ColorSquareEngine,
-            "Opposite Color Square (⭐⭐⭐⭐)": OppositeColorSquareEngine,
+            "Opposite Color (⭐⭐⭐⭐)": OppositeColorSquareEngine,
             "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
             "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
-            "Anti-Positional (⭐⭐)": AntiPositionalEngine
+            "Runaway Engine (⭐⭐⭐)": RunawayEngine,
+            "Anti-Positional (⭐⭐)": AntiPositionalEngine,
+            "Swarm Engine (⭐⭐)": SwarmEngine
         }
         
         self.create_widgets()
@@ -251,6 +257,14 @@ class EngineSelector(tk.Frame):
         selected = self.engine_var.get()
         
         info_texts = {
+            "Huddle Engine (⭐⭐⭐⭐⭐)": 
+                "The ultimate defensive engine!\n\n"
+                "• Prioritizes king safety above all\n"
+                "• Forms a protective barrier with pieces\n"
+                "• Avoids unnecessary risks\n"
+                "• Great for learning defensive strategies\n"
+                "• Can be frustrating to play against",
+
             "Random Engine (⭐⭐⭐⭐⭐)": 
                 "The weakest possible engine!\n\n"
                 "• Plays completely random legal moves\n"
@@ -337,14 +351,31 @@ class EngineSelector(tk.Frame):
                 "• Wastes tempo constantly\n"
                 "• Creates repetitive patterns\n"
                 "• Tests your patience",
-            
+
+            "Runaway Engine (⭐⭐⭐)":
+                "The fleeing pieces!\n\n"
+                "• King runs away from any enemy piece\n"
+                "• Prioritizes escape over all else\n"
+                "• Ignores other pieces completely\n"
+                "• Great for learning evasion tactics\n"
+                "• Can be unpredictable and frustrating",
+
             "Anti-Positional (⭐⭐)": 
                 "Violates all chess principles!\n\n"
                 "• Avoids central control\n"
                 "• Develops pieces poorly\n"
                 "• Blocks own pawns\n"
                 "• Understands tactics but ignores strategy\n"
-                "• Strongest of the weak engines"
+                "• Strongest of the weak engines",
+
+            "Swarm Engine (⭐⭐)": 
+                "• Pieces move as far away from their own king as possible!\n\n"
+                "• Prioritizes distance from own king\n"
+                "• Ignores all other considerations\n"
+                "• Creates chaotic positions\n"
+                "• Can result in aggressive offensive play\n"
+                "• Unpredictable and difficult to counter\n"
+
         }
         
         self.info_text.config(state=tk.NORMAL)

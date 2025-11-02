@@ -59,6 +59,9 @@ jobs:
         pyinstaller --onefile --name anti_positional_engine_${{ matrix.os }} scripts/anti_positional_engine.py
         pyinstaller --onefile --name color_square_engine_${{ matrix.os }} scripts/color_square_engine.py
         pyinstaller --onefile --name opposite_color_square_engine_${{ matrix.os }} scripts/opposite_color_square_engine.py
+        pyinstaller --onefile --name swarm_engine_${{ matrix.os }} scripts/swarm_engine.py
+        pyinstaller --onefile --name huddle_engine_${{ matrix.os }} scripts/huddle_engine.py
+        pyinstaller --onefile --name runaway_engine_${{ matrix.os }} scripts/runaway_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -79,6 +82,9 @@ jobs:
         copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
         copy "dist\color_square_engine_${{ matrix.os }}.exe" "release\color_square_engine_windows.exe"
         copy "dist\opposite_color_square_engine_${{ matrix.os }}.exe" "release\opposite_color_square_engine_windows.exe"
+        copy "dist\swarm_engine_${{ matrix.os }}.exe" "release\swarm_engine_windows.exe"
+        copy "dist\huddle_engine_${{ matrix.os }}.exe" "release\huddle_engine_windows.exe"
+        copy "dist\runaway_engine_${{ matrix.os }}.exe" "release\runaway_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -99,6 +105,9 @@ jobs:
         cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_linux"
         cp "dist/color_square_engine_${{ matrix.os }}" "release/color_square_engine_linux"
         cp "dist/opposite_color_square_engine_${{ matrix.os }}" "release/opposite_color_square_engine_linux"
+        cp "dist/swarm_engine_${{ matrix.os }}" "release/swarm_engine_linux"
+        cp "dist/huddle_engine_${{ matrix.os }}" "release/huddle_engine_linux"
+        cp "dist/runaway_engine_${{ matrix.os }}" "release/runaway_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -177,23 +186,39 @@ jobs:
     - name: Convert Tournament Table to Markdown
       id: tournament_table
       run: |
-        {
-          echo 'table<<EOF'
-          # Read CSV and convert to markdown
-          {
-            read -r header
-            # Print header row
-              IFS=',' read -ra cols <<< "$header"
-              printf '|'; for col in "${cols[@]}"; do printf ' %s |' "$col"; done; printf '\n'
-            # Print separator
-              printf '|'; for col in "${cols[@]}"; do printf ' --- |'; done; printf '\n'
-            # Print data rows
-            while IFS=',' read -r col1 col2 col3 col4 col5; do
-              printf '| %s | %s | %s | %s | %s |\n' "$col1" "$col2" "$col3" "$col4" "$col5"
-            done
-          } < final_release/tournament_results.csv
-          echo 'EOF'
-        } >> $GITHUB_OUTPUT
+        python - <<'PY'
+        import csv, sys
+
+        rows = []
+        with open('final_release/tournament_results.csv', newline='') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                rows.append(row)
+
+        if not rows:
+            print('table<<EOF', file=sys.stdout)
+            print('| No data |', file=sys.stdout)
+            print('EOF', file=sys.stdout)
+            sys.exit(0)
+
+        header = rows[0]
+        data = rows[1:]
+
+        def mkrow(r):
+            return '| ' + ' | '.join(r) + ' |'
+
+        md_lines = []
+        md_lines.append(mkrow(header))
+        md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
+        for r in data:
+            md_lines.append(mkrow(r))
+
+        print('table<<EOF')
+        for l in md_lines:
+            print(l)
+        print('EOF')
+        PY
+      shell: bash
 
     - name: Create Release
       id: create_release
@@ -228,6 +253,9 @@ jobs:
           - **Anti-Positional Engine**: Deliberately violates positional principles
           - **Color Square Engine**: Tries to move all its pieces onto squares matching its own color (white or black).
           - **Opposite Color Square Engine**: Tries to move all its pieces onto squares matching the opponent's color (white or black).
+          - **Swarm Engine**: Coordinates multiple pieces to swarm the opponent's position.
+          - **Huddle Engine**: Groups pieces together for mutual support and defense.
+          - **Runaway Engine**: Attempts to escape from threats by moving pieces away from danger.
 
           ## Tournament Results
 

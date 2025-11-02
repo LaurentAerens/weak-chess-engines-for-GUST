@@ -19,6 +19,9 @@ from src.engines.shuffle_engine import ShuffleEngine
 from src.engines.anti_positional_engine import AntiPositionalEngine
 from src.engines.color_square_engine import ColorSquareEngine
 from src.engines.opposite_color_square_engine import OppositeColorSquareEngine
+from src.engines.runaway_engine import RunawayEngine
+from src.engines.huddle_engine import HuddleEngine
+from src.engines.swarm_engine import SwarmEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -32,7 +35,10 @@ ENGINES = [
     ("Shuffle", ShuffleEngine),
     ("Anti-Positional", AntiPositionalEngine),
     ("Color Square", ColorSquareEngine),
-    ("Opposite Color Square", OppositeColorSquareEngine)
+    ("Opposite Color Square", OppositeColorSquareEngine),
+    ("Runaway", RunawayEngine),
+    ("Huddle", HuddleEngine),
+    ("Swarm", SwarmEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})
