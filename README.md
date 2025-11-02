@@ -84,25 +84,31 @@ python scripts/random_engine.py
 - **Characteristics**: Picks move at ~72% through the sorted list, different pattern from Pi
 - **Good for**: Math enthusiasts, comparing mathematical constant strategies
 
-### 6. Blunder Engine  
+### 6. Suicide King
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Tries to move the king as close as possible to the opponent's king
+- **Characteristics**: Recklessly advances king into danger, uses Chebyshev distance for proximity
+- **Good for**: Practicing king attacks and checkmate patterns, hilarious gameplay
+
+### 7. Blunder Engine  
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Actively looks for the worst possible moves
 - **Characteristics**: Evaluates positions and deliberately chooses bad moves, hangs pieces intentionally
 - **Good for**: Testing against engines that make tactical blunders
 
-### 7. Greedy Capture Engine
+### 8. Greedy Capture Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Always captures when possible, ignoring strategy
 - **Characteristics**: One-track mind focused only on capturing material
 - **Good for**: Testing against materialistic but strategically blind opponents
 
-### 8. Shuffle Engine
+### 9. Shuffle Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Prefers to move pieces back and forth without purpose
 - **Characteristics**: Creates shuffling patterns, wastes tempo, repeats positions
 - **Good for**: Testing against time-wasting, aimless play
 
-### 9. Anti-Positional Engine
+### 10. Anti-Positional Engine
 - **Weakness Level**: ⭐⭐ (Moderately Weak)
 - **Strategy**: Deliberately violates chess principles
 - **Characteristics**: Avoids central control, blocks own pawns, develops pieces poorly
@@ -263,6 +269,7 @@ python scripts/your_new_engine.py
 | Reverse Alphabetical | 35-75 | Very High | 12-22 |
 | Pi | 38-78 | Very High | 13-23 |
 | Euler | 38-78 | Very High | 13-23 |
+| Suicide King | 25-50 | Extremely High | 18-28 |
 | Blunder | 30-60 | Extremely High | 20-30 |
 | Greedy Capture | 50-90 | High | 10-20 |
 | Shuffle | 60-120 | Medium | 5-15 |
