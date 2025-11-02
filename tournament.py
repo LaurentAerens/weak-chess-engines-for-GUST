@@ -18,6 +18,7 @@ from src.engines.greedy_capture_engine import GreedyCaptureEngine
 from src.engines.shuffle_engine import ShuffleEngine
 from src.engines.anti_positional_engine import AntiPositionalEngine
 from src.engines.color_square_engine import ColorSquareEngine
+from src.engines.opposite_color_square_engine import OppositeColorSquareEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -30,7 +31,8 @@ ENGINES = [
     ("Greedy Capture", GreedyCaptureEngine),
     ("Shuffle", ShuffleEngine),
     ("Anti-Positional", AntiPositionalEngine),
-    ("Color Square", ColorSquareEngine)
+    ("Color Square", ColorSquareEngine),
+    ("Opposite Color Square", OppositeColorSquareEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

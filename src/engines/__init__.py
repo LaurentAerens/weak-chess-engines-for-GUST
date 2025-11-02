@@ -13,6 +13,7 @@ from .greedy_capture_engine import GreedyCaptureEngine
 from .shuffle_engine import ShuffleEngine
 from .anti_positional_engine import AntiPositionalEngine
 from .color_square_engine import ColorSquareEngine
+from .opposite_color_square_engine import OppositeColorSquareEngine
 
 __all__ = [
     'RandomEngine',
@@ -25,5 +26,6 @@ __all__ = [
     'GreedyCaptureEngine',
     'ShuffleEngine',
     'AntiPositionalEngine',
-    'ColorSquareEngine'
+    'ColorSquareEngine',
+    'OppositeColorSquareEngine'
 ]
