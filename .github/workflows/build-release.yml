@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest]
         python-version: ['3.9']
 
     steps:
@@ -68,23 +68,23 @@ jobs:
         copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
         copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
 
-    - name: Prepare artifacts (Linux/macOS)
-      if: matrix.os != 'windows-latest'
+    - name: Prepare artifacts (Linux)
+      if: matrix.os == 'ubuntu-latest'
       run: |
         # Create release directory
         mkdir -p release
         
         # Copy executables with proper naming
-        cp "dist/random_engine_${{ matrix.os }}" "release/random_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/alphabetical_engine_${{ matrix.os }}" "release/alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/reverse_alphabetical_engine_${{ matrix.os }}" "release/reverse_alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/pi_engine_${{ matrix.os }}" "release/pi_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/euler_engine_${{ matrix.os }}" "release/euler_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/suicide_king_engine_${{ matrix.os }}" "release/suicide_king_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/blunder_engine_${{ matrix.os }}" "release/blunder_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
-        cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/random_engine_${{ matrix.os }}" "release/random_engine_linux"
+        cp "dist/alphabetical_engine_${{ matrix.os }}" "release/alphabetical_engine_linux"
+        cp "dist/reverse_alphabetical_engine_${{ matrix.os }}" "release/reverse_alphabetical_engine_linux"
+        cp "dist/pi_engine_${{ matrix.os }}" "release/pi_engine_linux"
+        cp "dist/euler_engine_${{ matrix.os }}" "release/euler_engine_linux"
+        cp "dist/suicide_king_engine_${{ matrix.os }}" "release/suicide_king_engine_linux"
+        cp "dist/blunder_engine_${{ matrix.os }}" "release/blunder_engine_linux"
+        cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_linux"
+        cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_linux"
+        cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -131,9 +131,6 @@ jobs:
           zip -r ../weak-chess-engines-linux.zip *ubuntu*
         fi
         
-        if ls *macos* 1> /dev/null 2>&1; then
-          zip -r ../weak-chess-engines-macos.zip *macos*
-        fi
         
         # Create a complete package with all platforms
         cd ..
@@ -211,16 +208,6 @@ jobs:
         asset_name: weak-chess-engines-linux.zip
         asset_content_type: application/zip
 
-    - name: Upload macOS Release Asset
-      if: hashFiles('weak-chess-engines-macos.zip') != ''
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./weak-chess-engines-macos.zip
-        asset_name: weak-chess-engines-macos.zip
-        asset_content_type: application/zip
 
     - name: Upload All Platforms Release Asset
       uses: actions/upload-release-asset@v1
