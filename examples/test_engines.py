@@ -36,6 +36,7 @@ from engines.CCCP_engine import CCCPEngine
 from engines.passafist_engine import PassafistEngine
 from engines.single_player_engine import SinglePlayerEngine
 from engines.strangler_engine import StranglerEngine
+from engines.mover_engine import MoverEngine
 
 ENGINES = [
     RandomEngine(),
@@ -59,7 +60,8 @@ ENGINES = [
     CCCPEngine(),
     PassafistEngine(),
     SinglePlayerEngine(),
-    StranglerEngine()
+    StranglerEngine(),
+    MoverEngine()
 ]
 
 

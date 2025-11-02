@@ -68,7 +68,8 @@ def main():
         ("scripts/CCCP_engine.py", "CCCP_engine"),
         ("scripts/passafist_engine.py", "passafist_engine"),
         ("scripts/single_player_engine.py", "single_player_engine"),
-        ("scripts/strangler_engine.py", "strangler_engine")
+        ("scripts/strangler_engine.py", "strangler_engine"),
+        ("scripts/mover_engine.py", "mover_engine")
     ]
     
     successful_builds = 0

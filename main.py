@@ -40,6 +40,7 @@ try:
     from engines.passafist_engine import PassafistEngine
     from engines.single_player_engine import SinglePlayerEngine
     from engines.strangler_engine import StranglerEngine
+    from engines.mover_engine import MoverEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -223,7 +224,8 @@ class EngineSelector(tk.Frame):
             "CCCP Engine (⭐)": CCCPEngine,
             "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine,
             "Single Player Engine (⭐)": SinglePlayerEngine,
-            "Strangler Engine (⭐)": StranglerEngine
+            "Strangler Engine (⭐)": StranglerEngine,
+            "Mover Engine (⭐)": MoverEngine
         }
         
         self.create_widgets()
@@ -430,14 +432,20 @@ class EngineSelector(tk.Frame):
                 "• Looks ahead a few moves to assess outcomes\n"
                 "• Simple but effective for casual play\n"
                 "• Limited understanding of complex tactics\n"
-                "• Thinks of every move as a it's to play doesn't think the opponent can make a move\n"
+                "• Thinks of every move as a it's to play doesn't think the opponent can make a move\n",
 
             "Strangler Engine (⭐)":
                 "Gradually restricts opponent's mobility!\n\n"
                 "• Prioritizes moves that limit opponent's options\n"
                 "• Aims to control key squares and files\n"
                 "• Can lead to slow but steady advantages\n"
-                "• Effective against aggressive opponents\n"
+                "• Effective against aggressive opponents\n",
+
+            "Mover Engine (⭐)":
+                "• Moves the least recently moved piece\n"
+                "• Prioritizes squares that have been visited less\n"
+                "• Can create unexpected threats\n"
+                "• Encourages exploration of the board\n"
 
         }
         

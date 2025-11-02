@@ -69,6 +69,7 @@ jobs:
         pyinstaller --onefile --name passafist_engine_${{ matrix.os }} scripts/passafist_engine.py
         pyinstaller --onefile --name single_player_engine_${{ matrix.os }} scripts/single_player_engine.py
         pyinstaller --onefile --name strangler_engine_${{ matrix.os }} scripts/strangler_engine.py
+        pyinstaller --onefile --name mover_engine_${{ matrix.os }} scripts/mover_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -99,6 +100,7 @@ jobs:
         copy "dist\passafist_engine_${{ matrix.os }}.exe" "release\passafist_engine_windows.exe"
         copy "dist\single_player_engine_${{ matrix.os }}.exe" "release\single_player_engine_windows.exe"
         copy "dist\strangler_engine_${{ matrix.os }}.exe" "release\strangler_engine_windows.exe"
+        copy "dist\mover_engine_${{ matrix.os }}.exe" "release\mover_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -129,7 +131,8 @@ jobs:
         cp "dist/passafist_engine_${{ matrix.os }}" "release/passafist_engine_linux"
         cp "dist/single_player_engine_${{ matrix.os }}" "release/single_player_engine_linux"
         cp "dist/strangler_engine_${{ matrix.os }}" "release/strangler_engine_linux"
-        
+        cp "dist/mover_engine_${{ matrix.os }}" "release/mover_engine_linux"
+
         # Make executables... executable
         chmod +x release/*
 
@@ -290,6 +293,7 @@ jobs:
           - **Passafist Engine**: An engine that prefers to pass its turn whenever possible, leading to very passive play.
           - **Single Player Engine**: An classical basic engine but thinks it's only allowed to make moves and not the opponent.
           - **Strangler Engine**: An engine that focuses minimizing its opponents moves in the next turn.
+          - **Mover Engine**: An engine that focuses on moving pieces towards the center of the board.
 
           ## Tournament Results
 

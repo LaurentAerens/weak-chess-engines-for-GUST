@@ -195,6 +195,12 @@ python scripts/random_engine.py
   - Effective against aggressive opponents
 - **Good for**: Testing against aggressive playstyles and learning positional control
 
+### 23. Mover Engine
+- **Weakness Level**: ⭐ (Almost Medium)
+- **Strategy**: Moves pieces towards the center of the board
+- **Characteristics**: Focuses on piece activity and central control
+- **Good for**: Practicing opening principles and piece coordination
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility
