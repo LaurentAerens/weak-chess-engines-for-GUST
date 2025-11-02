@@ -10,6 +10,10 @@ on:
         description: 'Version number for the release'
         required: true
         default: 'v1.0.0'
+      notes:
+        description: 'Additional release notes/comments'
+        required: false
+        default: ''
 
 # Grant the workflow permission to create releases using GITHUB_TOKEN
 permissions:
@@ -153,21 +157,37 @@ jobs:
         cd ..
         zip -r weak-chess-engines-all-platforms.zip final_release/
 
-    - name: Get version
+    - name: Get version and notes
       id: get_version
       run: |
         if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "NOTES=${{ github.event.inputs.notes }}" >> $GITHUB_OUTPUT
         else
           echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "NOTES=" >> $GITHUB_OUTPUT
         fi
 
-    - name: Read Tournament Table for Release
+    - name: Convert Tournament Table to Markdown
       id: tournament_table
       run: |
-        echo 'table<<EOF' >> $GITHUB_OUTPUT
-        cat final_release/tournament_results.txt >> $GITHUB_OUTPUT
-        echo 'EOF' >> $GITHUB_OUTPUT
+        {
+          echo 'table<<EOF'
+          # Read CSV and convert to markdown
+          {
+            read -r header
+            # Print header row
+            IFS=',' read -ra cols <<< "$header"
+            printf '| %s |\n' "${cols[@]}"
+            # Print separator
+            printf '|%s|\n' "$(printf ' --- |%.0s' "${cols[@]}")"
+            # Print data rows
+            while IFS=',' read -r col1 col2 col3 col4 col5; do
+              printf '| %s | %s | %s | %s | %s |\n' "$col1" "$col2" "$col3" "$col4" "$col5"
+            done
+          } < final_release/tournament_results.csv
+          echo 'EOF'
+        } >> $GITHUB_OUTPUT
 
     - name: Create Release
       id: create_release
@@ -179,6 +199,12 @@ jobs:
         release_name: Weak Chess Engines ${{ steps.get_version.outputs.VERSION }}
         body: |
           # Weak Chess Engines Release ${{ steps.get_version.outputs.VERSION }}
+
+          # Release Notes for this Version:
+
+          ${{ steps.get_version.outputs.NOTES }}
+
+          # General Information
 
           This release contains UCI-compatible chess engines designed to play intentionally weak chess for testing, learning and entertainment.
 
