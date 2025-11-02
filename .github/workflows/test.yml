@@ -60,8 +60,8 @@ jobs:
         from engines.color_square_engine import ColorSquareEngine
         engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine()]
         for engine in engines:
-        print(f'Created {engine.name} by {engine.author}')
-        print('All engines created successfully!')"
+          print(f'Created {engine.name} by {engine.author}')
+          print('All engines created successfully!')"
 
     - name: Test engine move generation
       run: |
