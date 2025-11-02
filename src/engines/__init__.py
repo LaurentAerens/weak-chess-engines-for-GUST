@@ -19,6 +19,7 @@ from .swarm_engine import SwarmEngine
 from .runaway_engine import RunawayEngine
 from .mirror_y_engine import MirrorYEngine
 from .mirror_x_engine import MirrorXEngine
+from .CCCP_engine import CCCPEngine
 from .reverse_start_engine import ReverseStartEngine
 
 __all__ = [
@@ -39,5 +40,6 @@ __all__ = [
     'RunawayEngine',
     'MirrorYEngine',
     'MirrorXEngine',
-    'ReverseStartEngine'
+    'ReverseStartEngine',
+    'CCCPEngine'
 ]

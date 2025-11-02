@@ -65,6 +65,7 @@ jobs:
         pyinstaller --onefile --name mirror_y_engine_${{ matrix.os }} scripts/mirror_y_engine.py
         pyinstaller --onefile --name mirror_x_engine_${{ matrix.os }} scripts/mirror_x_engine.py
         pyinstaller --onefile --name reverse_start_engine_${{ matrix.os }} scripts/reverse_start_engine.py
+        pyinstaller --onefile --name CCCP_engine_${{ matrix.os }} scripts/CCCP_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -91,6 +92,7 @@ jobs:
         copy "dist\mirror_y_engine_${{ matrix.os }}.exe" "release\mirror_y_engine_windows.exe"
         copy "dist\mirror_x_engine_${{ matrix.os }}.exe" "release\mirror_x_engine_windows.exe"
         copy "dist\reverse_start_engine_${{ matrix.os }}.exe" "release\reverse_start_engine_windows.exe"
+        copy "dist\CCCP_engine_${{ matrix.os }}.exe" "release\CCCP_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -117,6 +119,7 @@ jobs:
         cp "dist/mirror_y_engine_${{ matrix.os }}" "release/mirror_y_engine_linux"
         cp "dist/mirror_x_engine_${{ matrix.os }}" "release/mirror_x_engine_linux"
         cp "dist/reverse_start_engine_${{ matrix.os }}" "release/reverse_start_engine_linux"
+        cp "dist/CCCP_engine_${{ matrix.os }}" "release/CCCP_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -274,6 +277,7 @@ jobs:
           - **Mirror Y Engine**: Mirrors opponent's moves along the Y-axis.
           - **Mirror X Engine**: Mirrors opponent's moves along the X-axis.
           - **Reverse Start Engine**: Starts with pieces in reverse order and plays accordingly.
+          - **CCCP Engine**: A quirky engine that plays in a Soviet-themed style. checkmate, check, capture and push.
 
           ## Tournament Results
 

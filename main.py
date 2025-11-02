@@ -36,6 +36,7 @@ try:
     from engines.mirror_y_engine import MirrorYEngine
     from engines.mirror_x_engine import MirrorXEngine
     from engines.reverse_start_engine import ReverseStartEngine
+    from engines.CCCP_engine import CCCPEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -215,7 +216,8 @@ class EngineSelector(tk.Frame):
             "Mirror X Engine (⭐⭐⭐)": MirrorXEngine,
             "Anti-Positional (⭐⭐)": AntiPositionalEngine,
             "Swarm Engine (⭐⭐)": SwarmEngine,
-            "Reverse Start Engine (⭐⭐)": ReverseStartEngine
+            "Reverse Start Engine (⭐⭐)": ReverseStartEngine,
+            "CCCP Engine (⭐)": CCCPEngine
         }
         
         self.create_widgets()
@@ -388,15 +390,26 @@ class EngineSelector(tk.Frame):
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
                 "• Fun for testing symmetry and creative play\n",
+
             "Mirror X Engine (⭐⭐⭐)":
                 "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the X axis.\n\n"
                 "• Attempts to mirror the board state across files (a<->h)\n"
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
                 "• Fun for testing symmetry and creative play\n",
+
             "Reverse Start Engine (⭐⭐)":
                 "tries to get to the enemy's starting position as quickly as possible!\n\n"
-                "• Prioritizes moves that lead to the opponent's initial setup\n"   
+                "• Prioritizes moves that lead to the opponent's initial setup\n",
+
+            "CCCP Engine (⭐)":
+                "The Soviet Strategy!\n\n"
+                "• 1) Checkmate if possible\n"
+                "• 2) Give check if possible\n"
+                "• 3) Capture if possible\n"
+                "• 4) Push pieces closer to enemy backline\n"
+                "• Picks randomly among equally good moves\n"  
+
         }
         
         self.info_text.config(state=tk.NORMAL)

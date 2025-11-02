@@ -27,6 +27,7 @@ from src.engines.swarm_engine import SwarmEngine
 from src.engines.mirror_y_engine import MirrorYEngine
 from src.engines.mirror_x_engine import MirrorXEngine
 from src.engines.reverse_start_engine import ReverseStartEngine
+from src.engines.CCCP_engine import CCCPEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -46,7 +47,8 @@ ENGINES = [
     ("Swarm", SwarmEngine),
     ("Mirror Y", MirrorYEngine),
     ("Mirror X", MirrorXEngine),
-    ("Reverse Start", ReverseStartEngine)
+    ("Reverse Start", ReverseStartEngine),
+    ("CCCP", CCCPEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

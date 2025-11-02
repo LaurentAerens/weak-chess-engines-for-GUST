@@ -32,6 +32,7 @@ from engines.huddle_engine import HuddleEngine
 from engines.mirror_y_engine import MirrorYEngine
 from engines.mirror_x_engine import MirrorXEngine
 from engines.reverse_start_engine import ReverseStartEngine
+from engines.CCCP_engine import CCCPEngine
 
 
 class EngineGame:
@@ -119,7 +120,8 @@ def test_engine_basics():
         RunawayEngine(),
         MirrorYEngine(),
         MirrorXEngine(),
-        ReverseStartEngine()
+        ReverseStartEngine(),
+        CCCPEngine()
     ]
     
     for engine in engines:
