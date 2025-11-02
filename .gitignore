@@ -211,3 +211,4 @@ release/
 test_games/
 *.pgn
 tournament_results.csv
+pairwise_results.csv

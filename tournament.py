@@ -42,17 +42,24 @@ ENGINES = [
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})
+# Pairwise results: (white, black) -> score (+1 white win, 0 draw, -1 black win)
+PAIRWISE = {}
 
 # Tournament settings
-MAX_MOVES = 80
-TIME_LIMIT = 0.2  # seconds per move
+# No per-move time limit and no maximum move limit - games run until completion
 
 
 
 import csv
+import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-print("Starting round-robin tournament...")
+parser = argparse.ArgumentParser(description='Run round-robin tournament between weak engines')
+parser.add_argument('--rounds', '-r', type=int, default=1, help='Number of full round-robin rounds to run (default: 1)')
+args = parser.parse_args()
+ROUNDS = max(1, args.rounds)
+
+print(f"Starting round-robin tournament... Rounds: {ROUNDS}")
 
 # Store all games for PGN export
 all_games = []
@@ -69,15 +76,21 @@ def game_task(white_name, white_class, black_name, black_class):
         white_engine = white_class()
         black_engine = black_class()
         print(f"\nGame: {white_name} (White) vs {black_name} (Black)")
-        for move_num in range(MAX_MOVES):
-            if board.is_game_over():
-                break
+        # Play until the game is over; engines may accept a think_time parameter or not.
+        while not board.is_game_over():
             if board.turn == chess.WHITE:
                 white_engine.board = board.copy()
-                move = white_engine.get_best_move(TIME_LIMIT)
+                try:
+                    move = white_engine.get_best_move()
+                except TypeError:
+                    # Fallback for engines that still expect a time argument
+                    move = white_engine.get_best_move(0)
             else:
                 black_engine.board = board.copy()
-                move = black_engine.get_best_move(TIME_LIMIT)
+                try:
+                    move = black_engine.get_best_move()
+                except TypeError:
+                    move = black_engine.get_best_move(0)
             if move is None or move not in board.legal_moves:
                 break
             board.push(move)
@@ -112,24 +125,34 @@ for i, (name1, class1) in enumerate(ENGINES):
             black_name, black_class = (name2, class2) if color == chess.WHITE else (name1, class1)
             tasks.append((white_name, white_class, black_name, black_class))
 
-print(f"Starting round-robin tournament with {len(tasks)} games...")
+# Duplicate tasks for the requested number of rounds
+all_task_args = [args for _ in range(ROUNDS) for args in tasks]
+print(f"Starting round-robin tournament with {len(all_task_args)} games ({ROUNDS} rounds, {len(tasks)} games per round)...")
 
 # Run games in parallel (max out system resources)
 all_games = []
 with ThreadPoolExecutor() as executor:
-    futures = [executor.submit(game_task, *args) for args in tasks]
+    futures = [executor.submit(game_task, *a) for a in all_task_args]
     for future in as_completed(futures):
         white_name, black_name, result_type, game = future.result()
         all_games.append(game)
+        # Update aggregate stats
         if result_type == "white_win":
             RESULTS[white_name]["win"] += 1
             RESULTS[black_name]["loss"] += 1
+            score = 1
         elif result_type == "black_win":
             RESULTS[black_name]["win"] += 1
             RESULTS[white_name]["loss"] += 1
+            score = -1
         else:
             RESULTS[white_name]["draw"] += 1
             RESULTS[black_name]["draw"] += 1
+            score = 0
+
+        # For pairwise matrix, if multiple rounds, accumulate by summing scores
+        key = (white_name, black_name)
+        PAIRWISE[key] = PAIRWISE.get(key, 0) + score
 
 
 
@@ -161,3 +184,34 @@ with open("tournament_games.pgn", "w") as pgnfile:
     for game in all_games:
         print(game, file=pgnfile, end="\n\n")
 print("All games exported to tournament_games.pgn")
+
+# Print pairwise results matrix (rows = White, columns = Black)
+engine_names = [name for name, _ in ENGINES]
+
+print('\nPairwise Results (rows = White, columns = Black):')
+header = ['Engine'] + engine_names
+print(' | '.join(header))
+print(' | '.join(['---'] * len(header)))
+for white in engine_names:
+    row = [white]
+    for black in engine_names:
+        if white == black:
+            row.append('')
+        else:
+            val = PAIRWISE.get((white, black), 0)
+            row.append(str(val))
+    print(' | '.join(row))
+
+# Export pairwise matrix to CSV
+with open('pairwise_results.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow([''] + engine_names)
+    for white in engine_names:
+        row = [white]
+        for black in engine_names:
+            if white == black:
+                row.append('')
+            else:
+                row.append(str(PAIRWISE.get((white, black), 0)))
+        writer.writerow(row)
+print('Pairwise results exported to pairwise_results.csv')
