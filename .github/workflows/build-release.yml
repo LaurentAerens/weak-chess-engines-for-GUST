@@ -11,6 +11,10 @@ on:
         required: true
         default: 'v1.0.0'
 
+# Grant the workflow permission to create releases using GITHUB_TOKEN
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -153,6 +157,7 @@ jobs:
       with:
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         release_name: Weak Chess Engines ${{ steps.get_version.outputs.VERSION }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         body: |
           # Weak Chess Engines Release ${{ steps.get_version.outputs.VERSION }}
           
@@ -169,8 +174,7 @@ jobs:
           ## Platform Support:
           
           - Windows (x64)
-          - Linux (x64) 
-          - macOS (x64)
+          - Linux (x64)
           
           ## Usage:
           
@@ -182,7 +186,6 @@ jobs:
           ## Installation:
           
           Simply download and run the executable - no additional installation required.
-          
         draft: false
         prerelease: false
 
