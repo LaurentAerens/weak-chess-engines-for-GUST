@@ -168,6 +168,13 @@ python scripts/random_engine.py
 - **Characteristics**: Often leaves pieces undefended, focuses on creating threats
 - **Good for**: Teaching basic checkmating patterns and tactics
 
+### 20. Passafist Engine
+- **Weakness Level**: ⭐⭐⭐⭐⭐ (Extremely Weak)
+- **Strategy**: Avoids captures and checks, prioritizes piece safety
+- **Characteristics**: Moves pieces to safe squares, often leading to passive play
+- **Good for**: Learning defensive play and piece safety
+
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility

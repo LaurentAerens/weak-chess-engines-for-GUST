@@ -33,6 +33,29 @@ from engines.mirror_y_engine import MirrorYEngine
 from engines.mirror_x_engine import MirrorXEngine
 from engines.reverse_start_engine import ReverseStartEngine
 from engines.CCCP_engine import CCCPEngine
+from engines.passafist_engine import PassafistEngine
+ENGINES = [
+    RandomEngine(),
+    AlphabeticalEngine(),
+    ReverseAlphabeticalEngine(),
+    PiEngine(),
+    EulerEngine(),
+    SuicideKingEngine(),
+    BlunderEngine(),
+    GreedyCaptureEngine(),
+    ShuffleEngine(),
+    AntiPositionalEngine(),
+    ColorSquareEngine(),
+    OppositeColorSquareEngine(),
+    SwarmEngine(),
+    HuddleEngine(),
+    RunawayEngine(),
+    MirrorYEngine(),
+    MirrorXEngine(),
+    ReverseStartEngine(),
+    CCCPEngine(),
+    PassafistEngine()
+]
 
 
 class EngineGame:
@@ -102,29 +125,7 @@ def test_engine_basics():
     print("Testing Engine Basics")
     print("=" * 40)
     
-    engines = [
-        RandomEngine(),
-        AlphabeticalEngine(),
-        ReverseAlphabeticalEngine(),
-        PiEngine(),
-        EulerEngine(),
-        SuicideKingEngine(),
-        BlunderEngine(),
-        GreedyCaptureEngine(),
-        ShuffleEngine(),
-        AntiPositionalEngine(),
-        ColorSquareEngine(),
-        OppositeColorSquareEngine(),
-        SwarmEngine(),
-        HuddleEngine(),
-        RunawayEngine(),
-        MirrorYEngine(),
-        MirrorXEngine(),
-        ReverseStartEngine(),
-        CCCPEngine()
-    ]
-    
-    for engine in engines:
+    for engine in ENGINES:
         print(f"\nTesting {engine.name}:")
         
         # Test from starting position
@@ -152,7 +153,19 @@ def demonstrate_uci():
     print("\nUCI Protocol Demonstration")
     print("=" * 40)
     
-    engine = RandomEngine()
+    print("Simulating UCI commands for all engines:")
+    for engine in ENGINES:
+        print(f"\nEngine: {engine.name}")
+        print("→ uci")
+        engine.handle_uci()
+        print("→ isready")
+        engine.handle_isready()
+        print("→ position startpos moves e2e4 e7e5")
+        engine.handle_position(['startpos', 'moves', 'e2e4', 'e7e5'])
+        print(f"Board after moves: {engine.board.fen()}")
+        print("→ go movetime 1000")
+        move = engine.get_best_move(1.0)
+        print(f"bestmove {move}")
     
     print("Simulating UCI commands:")
     print("→ uci")
