@@ -119,6 +119,7 @@ jobs:
     - name: Run Tournament and Export Results
       run: |
         python tournament.py
+        mkdir -p final_release
         cp tournament_results.csv final_release/
         cp tournament_games.pgn final_release/
         echo "Tournament results:" > final_release/tournament_results.txt
