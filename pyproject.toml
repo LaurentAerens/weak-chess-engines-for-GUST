@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weak-chess-engines"
+version = "1.0.0"
+description = "Collection of intentionally weak chess engines for testing and analysis"
+authors = [{name = "Laurent Aerens", email = "laurent.aerens@example.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "chess>=1.999",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/LaurentAerens/weak-chess-engines-for-GUST"
+"Bug Reports" = "https://github.com/LaurentAerens/weak-chess-engines-for-GUST/issues"
+"Source" = "https://github.com/LaurentAerens/weak-chess-engines-for-GUST"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
