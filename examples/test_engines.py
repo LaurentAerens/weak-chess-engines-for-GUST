@@ -16,10 +16,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from engines.random_engine import RandomEngine
 from engines.alphabetical_engine import AlphabeticalEngine
+from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
+from engines.pi_engine import PiEngine
+from engines.euler_engine import EulerEngine
+from engines.suicide_king_engine import SuicideKingEngine
 from engines.blunder_engine import BlunderEngine
 from engines.greedy_capture_engine import GreedyCaptureEngine
 from engines.shuffle_engine import ShuffleEngine
 from engines.anti_positional_engine import AntiPositionalEngine
+from engines.color_square_engine import ColorSquareEngine
 
 
 class EngineGame:
@@ -92,10 +97,15 @@ def test_engine_basics():
     engines = [
         RandomEngine(),
         AlphabeticalEngine(),
+        ReverseAlphabeticalEngine(),
+        PiEngine(),
+        EulerEngine(),
+        SuicideKingEngine(),
         BlunderEngine(),
         GreedyCaptureEngine(),
         ShuffleEngine(),
-        AntiPositionalEngine()
+        AntiPositionalEngine(),
+        ColorSquareEngine()
     ]
     
     for engine in engines:
@@ -128,10 +138,15 @@ def tournament():
     engines = [
         RandomEngine(),
         AlphabeticalEngine(),
+        ReverseAlphabeticalEngine(),
+        PiEngine(),
+        EulerEngine(),
+        SuicideKingEngine(),
         BlunderEngine(),
         GreedyCaptureEngine(),
         ShuffleEngine(),
-        AntiPositionalEngine()
+        AntiPositionalEngine(),
+        ColorSquareEngine()
     ]
     
     results = {}

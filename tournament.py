@@ -17,6 +17,7 @@ from src.engines.blunder_engine import BlunderEngine
 from src.engines.greedy_capture_engine import GreedyCaptureEngine
 from src.engines.shuffle_engine import ShuffleEngine
 from src.engines.anti_positional_engine import AntiPositionalEngine
+from src.engines.color_square_engine import ColorSquareEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -29,6 +30,7 @@ ENGINES = [
     ("Greedy Capture", GreedyCaptureEngine),
     ("Shuffle", ShuffleEngine),
     ("Anti-Positional", AntiPositionalEngine),
+    ("Color Square", ColorSquareEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

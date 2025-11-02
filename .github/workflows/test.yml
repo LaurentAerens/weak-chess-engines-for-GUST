@@ -29,84 +29,64 @@ jobs:
 
     - name: Test engine imports
       run: |
-        python -c "
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.getcwd(), 'src'))
-        
-        # Test all engine imports
+        python -c "import sys; import os; sys.path.insert(0, os.path.join(os.getcwd(), 'src'));
         from engines.random_engine import RandomEngine
-        from engines.blunder_engine import BlunderEngine  
+        from engines.alphabetical_engine import AlphabeticalEngine
+        from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
+        from engines.pi_engine import PiEngine
+        from engines.euler_engine import EulerEngine
+        from engines.suicide_king_engine import SuicideKingEngine
+        from engines.blunder_engine import BlunderEngine
         from engines.greedy_capture_engine import GreedyCaptureEngine
         from engines.shuffle_engine import ShuffleEngine
         from engines.anti_positional_engine import AntiPositionalEngine
+        from engines.color_square_engine import ColorSquareEngine
         from base_engine import BaseUCIEngine
-        
-        print('All engines imported successfully!')
-        "
+        print('All engines imported successfully!')"
 
     - name: Test engine instantiation
       run: |
-        python -c "
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.getcwd(), 'src'))
-        
+        python -c "import sys; import os; sys.path.insert(0, os.path.join(os.getcwd(), 'src'));
         from engines.random_engine import RandomEngine
-        from engines.blunder_engine import BlunderEngine  
+        from engines.alphabetical_engine import AlphabeticalEngine
+        from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
+        from engines.pi_engine import PiEngine
+        from engines.euler_engine import EulerEngine
+        from engines.suicide_king_engine import SuicideKingEngine
+        from engines.blunder_engine import BlunderEngine
         from engines.greedy_capture_engine import GreedyCaptureEngine
         from engines.shuffle_engine import ShuffleEngine
         from engines.anti_positional_engine import AntiPositionalEngine
-        
-        # Test engine instantiation
-        engines = [
-            RandomEngine(),
-            BlunderEngine(),
-            GreedyCaptureEngine(), 
-            ShuffleEngine(),
-            AntiPositionalEngine()
-        ]
-        
+        from engines.color_square_engine import ColorSquareEngine
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine()]
         for engine in engines:
-            print(f'Created {engine.name} by {engine.author}')
-        
-        print('All engines created successfully!')
-        "
+        print(f'Created {engine.name} by {engine.author}')
+        print('All engines created successfully!')"
 
     - name: Test engine move generation
       run: |
-        python -c "
-        import sys
-        import os
-        import chess
-        sys.path.insert(0, os.path.join(os.getcwd(), 'src'))
-        
+        python -c "import sys; import os; import chess; sys.path.insert(0, os.path.join(os.getcwd(), 'src'));
         from engines.random_engine import RandomEngine
-        from engines.blunder_engine import BlunderEngine  
+        from engines.alphabetical_engine import AlphabeticalEngine
+        from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
+        from engines.pi_engine import PiEngine
+        from engines.euler_engine import EulerEngine
+        from engines.suicide_king_engine import SuicideKingEngine
+        from engines.blunder_engine import BlunderEngine
         from engines.greedy_capture_engine import GreedyCaptureEngine
         from engines.shuffle_engine import ShuffleEngine
         from engines.anti_positional_engine import AntiPositionalEngine
-        
-        engines = [
-            RandomEngine(),
-            BlunderEngine(),
-            GreedyCaptureEngine(), 
-            ShuffleEngine(),
-            AntiPositionalEngine()
-        ]
-        
-        # Test move generation from starting position
+        from engines.color_square_engine import ColorSquareEngine
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine()]
         for engine in engines:
-            engine.board = chess.Board()
-            move = engine.get_best_move(0.1)  # 0.1 second think time
-            if move and move in engine.board.legal_moves:
-                print(f'{engine.name}: Generated legal move {move}')
-            else:
-                print(f'ERROR: {engine.name} failed to generate a legal move')
-                sys.exit(1)
-        
-        print('All engines generated legal moves successfully!')
-        "
+          engine.board = chess.Board()
+          move = engine.get_best_move(0.1)
+          if move and move in engine.board.legal_moves:
+            print(f'{engine.name}: Generated legal move {move}')
+          else:
+            print(f'ERROR: {engine.name} failed to generate a legal move')
+            sys.exit(1)
+        print('All engines generated legal moves successfully!')"
 
   build-test:
     runs-on: ubuntu-latest

@@ -96,19 +96,25 @@ python scripts/random_engine.py
 - **Characteristics**: Evaluates positions and deliberately chooses bad moves, hangs pieces intentionally
 - **Good for**: Testing against engines that make tactical blunders
 
-### 8. Greedy Capture Engine
+### 8. Color Square Engine
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Tries to move all its pieces onto squares matching its own color (white or black).
+- **Characteristics**: No regard for opponent's threats, purely focuses on color matching
+- **Good for**: Teaching basic concepts of color squares and piece movement
+
+### 9. Greedy Capture Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Always captures when possible, ignoring strategy
 - **Characteristics**: One-track mind focused only on capturing material
 - **Good for**: Testing against materialistic but strategically blind opponents
 
-### 9. Shuffle Engine
+### 10. Shuffle Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Prefers to move pieces back and forth without purpose
 - **Characteristics**: Creates shuffling patterns, wastes tempo, repeats positions
 - **Good for**: Testing against time-wasting, aimless play
 
-### 10. Anti-Positional Engine
+### 11. Anti-Positional Engine
 - **Weakness Level**: ⭐⭐ (Moderately Weak)
 - **Strategy**: Deliberately violates chess principles
 - **Characteristics**: Avoids central control, blocks own pawns, develops pieces poorly

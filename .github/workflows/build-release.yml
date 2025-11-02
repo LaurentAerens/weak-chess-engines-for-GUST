@@ -57,6 +57,7 @@ jobs:
         pyinstaller --onefile --name greedy_capture_engine_${{ matrix.os }} scripts/greedy_capture_engine.py
         pyinstaller --onefile --name shuffle_engine_${{ matrix.os }} scripts/shuffle_engine.py
         pyinstaller --onefile --name anti_positional_engine_${{ matrix.os }} scripts/anti_positional_engine.py
+        pyinstaller --onefile --name color_square_engine_${{ matrix.os }} scripts/color_square_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -75,6 +76,7 @@ jobs:
         copy "dist\greedy_capture_engine_${{ matrix.os }}.exe" "release\greedy_capture_engine_windows.exe"
         copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
         copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
+        copy "dist\color_square_engine_${{ matrix.os }}.exe" "release\color_square_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -93,6 +95,7 @@ jobs:
         cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_linux"
         cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_linux"
         cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_linux"
+        cp "dist/color_square_engine_${{ matrix.os }}" "release/color_square_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -177,10 +180,10 @@ jobs:
           {
             read -r header
             # Print header row
-            IFS=',' read -ra cols <<< "$header"
-            printf '| %s |\n' "${cols[@]}"
+              IFS=',' read -ra cols <<< "$header"
+              printf '|'; for col in "${cols[@]}"; do printf ' %s |' "$col"; done; printf '\n'
             # Print separator
-            printf '|%s|\n' "$(printf ' --- |%.0s' "${cols[@]}")"
+              printf '|'; for col in "${cols[@]}"; do printf ' --- |'; done; printf '\n'
             # Print data rows
             while IFS=',' read -r col1 col2 col3 col4 col5; do
               printf '| %s | %s | %s | %s | %s |\n' "$col1" "$col2" "$col3" "$col4" "$col5"
@@ -220,6 +223,7 @@ jobs:
           - **Greedy Capture Engine**: Always captures when possible, ignoring safety
           - **Shuffle Engine**: Moves pieces back and forth, wasting tempo
           - **Anti-Positional Engine**: Deliberately violates positional principles
+          - **Color Square Engine**: Tries to move all its pieces onto squares matching its own color (white or black).
 
           ## Tournament Results
 

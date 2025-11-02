@@ -28,6 +28,7 @@ try:
     from engines.pi_engine import PiEngine
     from engines.euler_engine import EulerEngine
     from engines.suicide_king_engine import SuicideKingEngine
+    from engines.color_square_engine import ColorSquareEngine
 except ImportError as e:
     print(f"Error importing engines: {e}")
     print("Make sure you're running from the project root directory")
@@ -196,6 +197,7 @@ class EngineSelector(tk.Frame):
             "Euler Engine (⭐⭐⭐⭐)": EulerEngine,
             "Suicide King (⭐⭐⭐⭐)": SuicideKingEngine,
             "Blunder Engine (⭐⭐⭐⭐)": BlunderEngine,
+            "Color Square (⭐⭐⭐⭐)": ColorSquareEngine,
             "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
             "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
             "Anti-Positional (⭐⭐)": AntiPositionalEngine
@@ -301,7 +303,15 @@ class EngineSelector(tk.Frame):
                 "• Loves tactical blunders\n"
                 "• Makes your chess look brilliant\n"
                 "• Educational for learning tactics",
-            
+
+            "Color Square (⭐⭐⭐⭐)": 
+                "The color square strategist!\n\n"
+                "• Prioritizes control of color squares\n"
+                "• Develops pieces to dominate key squares\n"
+                "• Ignores material for positional play\n"
+                "• Great for learning color complex concepts\n"
+                "• Subtle and sophisticated",
+
             "Greedy Capture (⭐⭐⭐)": 
                 "Material obsessed engine!\n\n"
                 "• Always captures when possible\n"
