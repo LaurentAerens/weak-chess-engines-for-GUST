@@ -27,6 +27,7 @@ try:
     from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
     from engines.pi_engine import PiEngine
     from engines.euler_engine import EulerEngine
+    from engines.suicide_king_engine import SuicideKingEngine
 except ImportError as e:
     print(f"Error importing engines: {e}")
     print("Make sure you're running from the project root directory")
@@ -193,6 +194,7 @@ class EngineSelector(tk.Frame):
             "Reverse Alphabetical (⭐⭐⭐⭐)": ReverseAlphabeticalEngine,
             "Pi Engine (⭐⭐⭐⭐)": PiEngine,
             "Euler Engine (⭐⭐⭐⭐)": EulerEngine,
+            "Suicide King (⭐⭐⭐⭐)": SuicideKingEngine,
             "Blunder Engine (⭐⭐⭐⭐)": BlunderEngine,
             "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
             "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
@@ -283,6 +285,14 @@ class EngineSelector(tk.Frame):
                 "• Different pattern from Pi Engine\n"
                 "• Picks ~72% through the move list\n"
                 "• For math enthusiasts!",
+            
+            "Suicide King (⭐⭐⭐⭐)": 
+                "The kamikaze monarch!\n\n"
+                "• Tries to move king toward enemy king\n"
+                "• Recklessly advances into danger\n"
+                "• Ignores safety completely\n"
+                "• Great for practicing king attacks\n"
+                "• Hilarious and aggressive",
             
             "Blunder Engine (⭐⭐⭐⭐)": 
                 "Actively tries to play badly!\n\n"
