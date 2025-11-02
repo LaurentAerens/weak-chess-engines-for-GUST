@@ -162,6 +162,12 @@ python scripts/random_engine.py
 - **Characteristics**: Prioritizes moves that lead to the opponent's initial setup
 - **Good for**: Testing against engines that exploit poor positional play
 
+### 19. CCCP Engine
+- **Weakness Level**: ⭐ ( Almost Medium)
+- **Strategy**: Tries to create a "checkmate" pattern with its pieces
+- **Characteristics**: Often leaves pieces undefended, focuses on creating threats
+- **Good for**: Teaching basic checkmating patterns and tactics
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility
