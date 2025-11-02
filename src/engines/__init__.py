@@ -21,7 +21,7 @@ from .mirror_y_engine import MirrorYEngine
 from .mirror_x_engine import MirrorXEngine
 from .CCCP_engine import CCCPEngine
 from .reverse_start_engine import ReverseStartEngine
-from .passafist_engine import PassafistEngine
+from .single_player_engine import SinglePlayerEngine
 
 __all__ = [
     'RandomEngine',
@@ -43,5 +43,6 @@ __all__ = [
     'MirrorXEngine',
     'ReverseStartEngine',
     'CCCPEngine',
-    'PassafistEngine'
+    'PassafistEngine',
+    'SinglePlayerEngine'
 ]

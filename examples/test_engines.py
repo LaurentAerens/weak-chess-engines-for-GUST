@@ -34,6 +34,8 @@ from engines.mirror_x_engine import MirrorXEngine
 from engines.reverse_start_engine import ReverseStartEngine
 from engines.CCCP_engine import CCCPEngine
 from engines.passafist_engine import PassafistEngine
+from engines.single_player_engine import SinglePlayerEngine
+
 ENGINES = [
     RandomEngine(),
     AlphabeticalEngine(),
@@ -54,7 +56,8 @@ ENGINES = [
     MirrorXEngine(),
     ReverseStartEngine(),
     CCCPEngine(),
-    PassafistEngine()
+    PassafistEngine(),
+    SinglePlayerEngine()
 ]
 
 

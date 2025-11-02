@@ -29,6 +29,7 @@ from src.engines.mirror_x_engine import MirrorXEngine
 from src.engines.reverse_start_engine import ReverseStartEngine
 from src.engines.CCCP_engine import CCCPEngine
 from src.engines.passafist_engine import PassafistEngine
+from src.engines.single_player_engine import SinglePlayerEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -50,7 +51,8 @@ ENGINES = [
     ("Mirror X", MirrorXEngine),
     ("Reverse Start", ReverseStartEngine),
     ("CCCP", CCCPEngine),
-    ("Passafist", PassafistEngine)
+    ("Passafist", PassafistEngine),
+    ("Single Player", SinglePlayerEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

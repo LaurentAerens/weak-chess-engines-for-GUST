@@ -50,6 +50,7 @@ jobs:
         from engines.reverse_start_engine import ReverseStartEngine
         from engines.CCCP_engine import CCCPEngine
         from engines.passafist_engine import PassafistEngine
+        from engines.single_player_engine import SinglePlayerEngine
         from base_engine import BaseUCIEngine
         print('All engines imported successfully!')"
 
@@ -76,8 +77,9 @@ jobs:
         from engines.reverse_start_engine import ReverseStartEngine
         from engines.CCCP_engine import CCCPEngine
         from engines.passafist_engine import PassafistEngine
+        from engines.single_player_engine import SinglePlayerEngine
 
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine()]
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine(), SinglePlayerEngine()]
         for engine in engines:
           print(f'Created {engine.name} by {engine.author}')
           print('All engines created successfully!')"
@@ -105,8 +107,9 @@ jobs:
         from engines.reverse_start_engine import ReverseStartEngine
         from engines.CCCP_engine import CCCPEngine
         from engines.passafist_engine import PassafistEngine
+        from engines.single_player_engine import SinglePlayerEngine
 
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine()]
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine(), SinglePlayerEngine()]
         for engine in engines:
           engine.board = chess.Board()
           move = engine.get_best_move(0.1)

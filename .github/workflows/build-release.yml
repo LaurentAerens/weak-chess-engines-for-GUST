@@ -67,6 +67,7 @@ jobs:
         pyinstaller --onefile --name reverse_start_engine_${{ matrix.os }} scripts/reverse_start_engine.py
         pyinstaller --onefile --name CCCP_engine_${{ matrix.os }} scripts/CCCP_engine.py
         pyinstaller --onefile --name passafist_engine_${{ matrix.os }} scripts/passafist_engine.py
+        pyinstaller --onefile --name single_player_engine_${{ matrix.os }} scripts/single_player_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -95,6 +96,7 @@ jobs:
         copy "dist\reverse_start_engine_${{ matrix.os }}.exe" "release\reverse_start_engine_windows.exe"
         copy "dist\CCCP_engine_${{ matrix.os }}.exe" "release\CCCP_engine_windows.exe"
         copy "dist\passafist_engine_${{ matrix.os }}.exe" "release\passafist_engine_windows.exe"
+        copy "dist\single_player_engine_${{ matrix.os }}.exe" "release\single_player_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -123,6 +125,7 @@ jobs:
         cp "dist/reverse_start_engine_${{ matrix.os }}" "release/reverse_start_engine_linux"
         cp "dist/CCCP_engine_${{ matrix.os }}" "release/CCCP_engine_linux"
         cp "dist/passafist_engine_${{ matrix.os }}" "release/passafist_engine_linux"
+        cp "dist/single_player_engine_${{ matrix.os }}" "release/single_player_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -282,6 +285,7 @@ jobs:
           - **Reverse Start Engine**: Starts with pieces in reverse order and plays accordingly.
           - **CCCP Engine**: A quirky engine that plays in a Soviet-themed style. checkmate, check, capture and push.
           - **Passafist Engine**: An engine that prefers to pass its turn whenever possible, leading to very passive play.
+          - **Single Player Engine**: An classical basic engine but thinks it's only allowed to make moves and not the opponent.
 
           ## Tournament Results
 
