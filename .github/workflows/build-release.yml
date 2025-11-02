@@ -218,6 +218,12 @@ jobs:
             print(l)
         print('EOF')
         PY
+        echo "table<<EOF" >> $GITHUB_ENV
+        for l in md_lines; do
+            echo "$l" >> $GITHUB_ENV
+        done
+        echo "EOF" >> $GITHUB_ENV
+
       shell: bash
 
     - name: Create Release
