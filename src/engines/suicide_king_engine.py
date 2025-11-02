@@ -19,60 +19,85 @@ class SuicideKingEngine(BaseUCIEngine):
     def get_best_move(self, time_limit):
         """
         Select the move that brings our king closest to the opponent's king.
-        If no king moves are legal, pick a move that doesn't block the king's path.
+        If no king moves are legal, prioritize moving blocking pieces away or capturing enemy pieces.
         """
         legal_moves = list(self.board.legal_moves)
-        
         if not legal_moves:
             return None
-        
-        # Find both kings
+
         our_king_square = self.board.king(self.board.turn)
         opponent_king_square = self.board.king(not self.board.turn)
-        
         if our_king_square is None or opponent_king_square is None:
-            # Fallback if kings not found (shouldn't happen in valid positions)
             return legal_moves[0]
-        
-        # Calculate Manhattan distance between two squares
-        def manhattan_distance(sq1, sq2):
-            rank1, file1 = chess.square_rank(sq1), chess.square_file(sq1)
-            rank2, file2 = chess.square_rank(sq2), chess.square_file(sq2)
-            return abs(rank1 - rank2) + abs(file1 - file2)
-        
-        # Calculate Chebyshev distance (max of rank/file difference)
+
         def chebyshev_distance(sq1, sq2):
             rank1, file1 = chess.square_rank(sq1), chess.square_file(sq1)
             rank2, file2 = chess.square_rank(sq2), chess.square_file(sq2)
             return max(abs(rank1 - rank2), abs(file1 - file2))
-        
-        best_move = None
-        best_distance = float('inf')
-        
+
+        # Find king moves that get closer
+        king_moves = []
+        best_distance = chebyshev_distance(our_king_square, opponent_king_square)
         for move in legal_moves:
-            # Make the move on a copy to see the resulting position
-            test_board = self.board.copy()
-            test_board.push(move)
-            
-            # Find our king position after the move
-            our_king_after = test_board.king(self.board.turn)
-            
-            if our_king_after is None:
-                continue
-            
-            # Calculate distance after this move
-            # Use Chebyshev distance (king move distance) for more aggressive approach
-            distance = chebyshev_distance(our_king_after, opponent_king_square)
-            
-            # Strongly prefer king moves by giving them a huge bonus
-            is_king_move = move.from_square == our_king_square
-            
-            # King moves get massive priority (effectively distance - 100)
-            # This ensures king moves that approach are always chosen first
-            priority = distance - (100 if is_king_move else 0)
-            
-            if priority < best_distance:
-                best_distance = priority
-                best_move = move
-        
-        return best_move if best_move else legal_moves[0]
+            if move.from_square == our_king_square:
+                test_board = self.board.copy()
+                test_board.push(move)
+                new_king_square = test_board.king(self.board.turn)
+                if new_king_square is not None:
+                    dist = chebyshev_distance(new_king_square, opponent_king_square)
+                    if dist < best_distance:
+                        king_moves.append((dist, move))
+
+        if king_moves:
+            # Pick the king move that gets closest
+            king_moves.sort(key=lambda x: x[0])
+            return king_moves[0][1]
+
+        # If no king move gets closer, prioritize moving blocking pieces or capturing enemy pieces
+        # Find squares between our king and enemy king (simple straight line)
+        blocking_moves = []
+        capture_moves = []
+        # Vector from our king to enemy king
+        rk1, fk1 = chess.square_rank(our_king_square), chess.square_file(our_king_square)
+        rk2, fk2 = chess.square_rank(opponent_king_square), chess.square_file(opponent_king_square)
+        dr = rk2 - rk1
+        df = fk2 - fk1
+        # Only consider direct lines (horizontal, vertical, diagonal)
+        line_squares = []
+        if dr == 0 or df == 0 or abs(dr) == abs(df):
+            step_r = (dr > 0) - (dr < 0)
+            step_f = (df > 0) - (df < 0)
+            r, f = rk1 + step_r, fk1 + step_f
+            while (r, f) != (rk2, fk2):
+                sq = chess.square(f, r)
+                line_squares.append(sq)
+                r += step_r
+                f += step_f
+
+        # Find our pieces in between
+        for move in legal_moves:
+            # If move is a capture, prefer it
+            if self.board.is_capture(move):
+                capture_moves.append(move)
+            # If moving a piece that's in the line between kings, prefer it
+            if line_squares and move.from_square in line_squares:
+                blocking_moves.append(move)
+            # If moving the king pawn (pawn in front of king), prefer it
+            if our_king_square is not None:
+                king_rank = chess.square_rank(our_king_square)
+                king_file = chess.square_file(our_king_square)
+                # For white, pawn in front is one rank up; for black, one rank down
+                pawn_rank = king_rank + (1 if self.board.turn == chess.WHITE else -1)
+                if 0 <= pawn_rank <= 7:
+                    pawn_square = chess.square(king_file, pawn_rank)
+                    if move.from_square == pawn_square:
+                        blocking_moves.append(move)
+
+        # Prefer captures first
+        if capture_moves:
+            return capture_moves[0]
+        # Then prefer blocking piece moves
+        if blocking_moves:
+            return blocking_moves[0]
+        # Otherwise, just play any move
+        return legal_moves[0]
