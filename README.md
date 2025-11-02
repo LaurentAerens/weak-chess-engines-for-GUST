@@ -156,6 +156,12 @@ python scripts/random_engine.py
 - **Characteristics**: Creates symmetrical positions, often leading to passive play
 - **Good for**: Testing against engines that exploit lack of originality
 
+### 18. Reverse Start Engine
+- **Weakness Level**: ⭐⭐ (Moderately Weak)
+- **Strategy**: Tries to get to the enemy's starting position as quickly as possible
+- **Characteristics**: Prioritizes moves that lead to the opponent's initial setup
+- **Good for**: Testing against engines that exploit poor positional play
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility
