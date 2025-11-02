@@ -9,6 +9,8 @@ from .shuffle_engine import ShuffleEngine
 from .anti_positional_engine import AntiPositionalEngine
 from .alphabetical_engine import AlphabeticalEngine
 from .reverse_alphabetical_engine import ReverseAlphabeticalEngine
+from .pi_engine import PiEngine
+from .euler_engine import EulerEngine
 
 __all__ = [
     'RandomEngine',
@@ -17,5 +19,7 @@ __all__ = [
     'ShuffleEngine',
     'AntiPositionalEngine',
     'AlphabeticalEngine',
-    'ReverseAlphabeticalEngine'
+    'ReverseAlphabeticalEngine',
+    'PiEngine',
+    'EulerEngine'
 ]

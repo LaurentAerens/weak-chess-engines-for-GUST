@@ -25,6 +25,8 @@ try:
     from engines.anti_positional_engine import AntiPositionalEngine
     from engines.alphabetical_engine import AlphabeticalEngine
     from engines.reverse_alphabetical_engine import ReverseAlphabeticalEngine
+    from engines.pi_engine import PiEngine
+    from engines.euler_engine import EulerEngine
 except ImportError as e:
     print(f"Error importing engines: {e}")
     print("Make sure you're running from the project root directory")
@@ -189,6 +191,8 @@ class EngineSelector(tk.Frame):
             "Random Engine (⭐⭐⭐⭐⭐)": RandomEngine,
             "Alphabetical Engine (⭐⭐⭐⭐)": AlphabeticalEngine,
             "Reverse Alphabetical (⭐⭐⭐⭐)": ReverseAlphabeticalEngine,
+            "Pi Engine (⭐⭐⭐⭐)": PiEngine,
+            "Euler Engine (⭐⭐⭐⭐)": EulerEngine,
             "Blunder Engine (⭐⭐⭐⭐)": BlunderEngine,
             "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
             "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
@@ -263,6 +267,22 @@ class EngineSelector(tk.Frame):
                 "• Opposite pattern to Alphabetical Engine\n"
                 "• Still completely predictable\n"
                 "• Great for testing pattern recognition",
+            
+            "Pi Engine (⭐⭐⭐⭐)": 
+                "Mathematical constant player!\n\n"
+                "• Uses Pi (3.14159...) to pick moves\n"
+                "• Maps Pi's fractional part to move index\n"
+                "• Semi-predictable but mathematically elegant\n"
+                "• Picks ~14% through the move list\n"
+                "• Educational and quirky!",
+            
+            "Euler Engine (⭐⭐⭐⭐)": 
+                "Euler's number strategist!\n\n"
+                "• Uses e (2.71828...) to pick moves\n"
+                "• Maps e's fractional part to move index\n"
+                "• Different pattern from Pi Engine\n"
+                "• Picks ~72% through the move list\n"
+                "• For math enthusiasts!",
             
             "Blunder Engine (⭐⭐⭐⭐)": 
                 "Actively tries to play badly!\n\n"

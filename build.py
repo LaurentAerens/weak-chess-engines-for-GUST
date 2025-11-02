@@ -50,6 +50,8 @@ def main():
         ("scripts/random_engine.py", "random_engine"),
         ("scripts/alphabetical_engine.py", "alphabetical_engine"),
         ("scripts/reverse_alphabetical_engine.py", "reverse_alphabetical_engine"),
+        ("scripts/pi_engine.py", "pi_engine"),
+        ("scripts/euler_engine.py", "euler_engine"),
         ("scripts/blunder_engine.py", "blunder_engine"),
         ("scripts/greedy_capture_engine.py", "greedy_capture_engine"),
         ("scripts/shuffle_engine.py", "shuffle_engine"),

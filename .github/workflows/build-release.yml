@@ -42,6 +42,8 @@ jobs:
         pyinstaller --onefile --name random_engine_${{ matrix.os }} scripts/random_engine.py
         pyinstaller --onefile --name alphabetical_engine_${{ matrix.os }} scripts/alphabetical_engine.py
         pyinstaller --onefile --name reverse_alphabetical_engine_${{ matrix.os }} scripts/reverse_alphabetical_engine.py
+        pyinstaller --onefile --name pi_engine_${{ matrix.os }} scripts/pi_engine.py
+        pyinstaller --onefile --name euler_engine_${{ matrix.os }} scripts/euler_engine.py
         pyinstaller --onefile --name blunder_engine_${{ matrix.os }} scripts/blunder_engine.py
         pyinstaller --onefile --name greedy_capture_engine_${{ matrix.os }} scripts/greedy_capture_engine.py
         pyinstaller --onefile --name shuffle_engine_${{ matrix.os }} scripts/shuffle_engine.py
@@ -57,6 +59,8 @@ jobs:
         copy "dist\random_engine_${{ matrix.os }}.exe" "release\random_engine_windows.exe"
         copy "dist\alphabetical_engine_${{ matrix.os }}.exe" "release\alphabetical_engine_windows.exe"
         copy "dist\reverse_alphabetical_engine_${{ matrix.os }}.exe" "release\reverse_alphabetical_engine_windows.exe"
+        copy "dist\pi_engine_${{ matrix.os }}.exe" "release\pi_engine_windows.exe"
+        copy "dist\euler_engine_${{ matrix.os }}.exe" "release\euler_engine_windows.exe"
         copy "dist\blunder_engine_${{ matrix.os }}.exe" "release\blunder_engine_windows.exe"
         copy "dist\greedy_capture_engine_${{ matrix.os }}.exe" "release\greedy_capture_engine_windows.exe"
         copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
@@ -72,6 +76,8 @@ jobs:
         cp "dist/random_engine_${{ matrix.os }}" "release/random_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
         cp "dist/alphabetical_engine_${{ matrix.os }}" "release/alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
         cp "dist/reverse_alphabetical_engine_${{ matrix.os }}" "release/reverse_alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/pi_engine_${{ matrix.os }}" "release/pi_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/euler_engine_${{ matrix.os }}" "release/euler_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
         cp "dist/blunder_engine_${{ matrix.os }}" "release/blunder_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
         cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
         cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
