@@ -1,0 +1,224 @@
+name: Build and Release Chess Engines
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number for the release'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: ['3.9']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executables
+      run: |
+        # Create dist directory
+        mkdir -p dist
+        
+        # Build each engine
+        pyinstaller --onefile --name random_engine_${{ matrix.os }} scripts/random_engine.py
+        pyinstaller --onefile --name alphabetical_engine_${{ matrix.os }} scripts/alphabetical_engine.py
+        pyinstaller --onefile --name reverse_alphabetical_engine_${{ matrix.os }} scripts/reverse_alphabetical_engine.py
+        pyinstaller --onefile --name blunder_engine_${{ matrix.os }} scripts/blunder_engine.py
+        pyinstaller --onefile --name greedy_capture_engine_${{ matrix.os }} scripts/greedy_capture_engine.py
+        pyinstaller --onefile --name shuffle_engine_${{ matrix.os }} scripts/shuffle_engine.py
+        pyinstaller --onefile --name anti_positional_engine_${{ matrix.os }} scripts/anti_positional_engine.py
+
+    - name: Prepare artifacts (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Create release directory
+        mkdir release
+        
+        # Copy executables and rename with .exe extension
+        copy "dist\random_engine_${{ matrix.os }}.exe" "release\random_engine_windows.exe"
+        copy "dist\alphabetical_engine_${{ matrix.os }}.exe" "release\alphabetical_engine_windows.exe"
+        copy "dist\reverse_alphabetical_engine_${{ matrix.os }}.exe" "release\reverse_alphabetical_engine_windows.exe"
+        copy "dist\blunder_engine_${{ matrix.os }}.exe" "release\blunder_engine_windows.exe"
+        copy "dist\greedy_capture_engine_${{ matrix.os }}.exe" "release\greedy_capture_engine_windows.exe"
+        copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
+        copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
+
+    - name: Prepare artifacts (Linux/macOS)
+      if: matrix.os != 'windows-latest'
+      run: |
+        # Create release directory
+        mkdir -p release
+        
+        # Copy executables with proper naming
+        cp "dist/random_engine_${{ matrix.os }}" "release/random_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/alphabetical_engine_${{ matrix.os }}" "release/alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/reverse_alphabetical_engine_${{ matrix.os }}" "release/reverse_alphabetical_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/blunder_engine_${{ matrix.os }}" "release/blunder_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_$(echo ${{ matrix.os }} | cut -d'-' -f1)"
+        
+        # Make executables... executable
+        chmod +x release/*
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: chess-engines-${{ matrix.os }}
+        path: release/
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+
+    - name: Create release directory
+      run: |
+        mkdir -p final_release
+        
+        # Copy all executables to final release directory
+        find . -name "chess-engines-*" -type d | while read dir; do
+          cp "$dir"/* final_release/ 2>/dev/null || true
+        done
+        
+        # List files for debugging
+        ls -la final_release/
+
+    - name: Create ZIP archives
+      run: |
+        cd final_release
+        
+        # Create individual ZIP files for each platform
+        if ls *windows* 1> /dev/null 2>&1; then
+          zip -r ../weak-chess-engines-windows.zip *windows*
+        fi
+        
+        if ls *ubuntu* 1> /dev/null 2>&1; then
+          zip -r ../weak-chess-engines-linux.zip *ubuntu*
+        fi
+        
+        if ls *macos* 1> /dev/null 2>&1; then
+          zip -r ../weak-chess-engines-macos.zip *macos*
+        fi
+        
+        # Create a complete package with all platforms
+        cd ..
+        zip -r weak-chess-engines-all-platforms.zip final_release/
+
+    - name: Get version
+      id: get_version
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        release_name: Weak Chess Engines ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          # Weak Chess Engines Release ${{ steps.get_version.outputs.VERSION }}
+          
+          This release contains UCI-compatible chess engines designed to play weak chess for testing and analysis purposes.
+          
+          ## Engines Included:
+          
+          - **Random Engine**: Plays completely random legal moves
+          - **Blunder Engine**: Actively looks for bad moves to play
+          - **Greedy Capture Engine**: Always captures when possible, ignoring strategy
+          - **Shuffle Engine**: Prefers to move pieces back and forth without purpose
+          - **Anti-Positional Engine**: Deliberately violates chess principles
+          
+          ## Platform Support:
+          
+          - Windows (x64)
+          - Linux (x64) 
+          - macOS (x64)
+          
+          ## Usage:
+          
+          1. Download the appropriate executable for your platform
+          2. Use with any UCI-compatible chess GUI (Arena, ChessBase, etc.)
+          3. Load the engine in your chess software
+          4. Enjoy playing against intentionally weak opponents!
+          
+          ## Installation:
+          
+          Simply download and run the executable - no additional installation required.
+          
+        draft: false
+        prerelease: false
+
+    - name: Upload Windows Release Asset
+      if: hashFiles('weak-chess-engines-windows.zip') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./weak-chess-engines-windows.zip
+        asset_name: weak-chess-engines-windows.zip
+        asset_content_type: application/zip
+
+    - name: Upload Linux Release Asset
+      if: hashFiles('weak-chess-engines-linux.zip') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./weak-chess-engines-linux.zip
+        asset_name: weak-chess-engines-linux.zip
+        asset_content_type: application/zip
+
+    - name: Upload macOS Release Asset
+      if: hashFiles('weak-chess-engines-macos.zip') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./weak-chess-engines-macos.zip
+        asset_name: weak-chess-engines-macos.zip
+        asset_content_type: application/zip
+
+    - name: Upload All Platforms Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./weak-chess-engines-all-platforms.zip
+        asset_name: weak-chess-engines-all-platforms.zip
+        asset_content_type: application/zip
