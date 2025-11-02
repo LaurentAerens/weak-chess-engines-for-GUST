@@ -31,6 +31,7 @@ from src.engines.CCCP_engine import CCCPEngine
 from src.engines.passafist_engine import PassafistEngine
 from src.engines.single_player_engine import SinglePlayerEngine
 from src.engines.strangler_engine import StranglerEngine
+from src.engines.mover_engine import MoverEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -54,7 +55,8 @@ ENGINES = [
     ("CCCP", CCCPEngine),
     ("Passafist", PassafistEngine),
     ("Single Player", SinglePlayerEngine),
-    ("Strangler", StranglerEngine)
+    ("Strangler", StranglerEngine),
+    ("Mover", MoverEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})
