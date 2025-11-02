@@ -160,32 +160,37 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
           # Weak Chess Engines Release ${{ steps.get_version.outputs.VERSION }}
-          
-          This release contains UCI-compatible chess engines designed to play weak chess for testing and analysis purposes.
-          
+
+          This release contains UCI-compatible chess engines designed to play intentionally weak chess for testing, learning and entertainment.
+
           ## Engines Included:
-          
+
           - **Random Engine**: Plays completely random legal moves
-          - **Blunder Engine**: Actively looks for bad moves to play
-          - **Greedy Capture Engine**: Always captures when possible, ignoring strategy
-          - **Shuffle Engine**: Prefers to move pieces back and forth without purpose
-          - **Anti-Positional Engine**: Deliberately violates chess principles
-          
+          - **Alphabetical Engine**: Always picks the first move alphabetically (by SAN)
+          - **Reverse Alphabetical Engine**: Always picks the last move alphabetically (by SAN)
+          - **Pi Engine**: Uses Pi's fractional part to pick a move index (~14% through the list)
+          - **Euler Engine**: Uses e's fractional part to pick a move index (~72% through the list)
+          - **Suicide King**: Aggressively moves the king toward the opponent's king
+          - **Blunder Engine**: Intentionally searches for and plays very bad moves
+          - **Greedy Capture Engine**: Always captures when possible, ignoring safety
+          - **Shuffle Engine**: Moves pieces back and forth, wasting tempo
+          - **Anti-Positional Engine**: Deliberately violates positional principles
+
           ## Platform Support:
-          
+
           - Windows (x64)
           - Linux (x64)
-          
+
           ## Usage:
-          
-          1. Download the appropriate executable for your platform
-          2. Use with any UCI-compatible chess GUI (Arena, ChessBase, etc.)
-          3. Load the engine in your chess software
-          4. Enjoy playing against intentionally weak opponents!
-          
-          ## Installation:
-          
-          Simply download and run the executable - no additional installation required.
+
+          1. Download the appropriate ZIP for your platform from this release
+          2. Extract the executable(s) and run or register them in any UCI-compatible GUI
+          3. Optionally copy the executables into your chess GUI engines folder
+
+          ## Notes:
+
+          - These engines are intentionally weak and meant for testing, education and fun.
+          - If you need macOS builds later, we can re-add macOS to the matrix.
         draft: false
         prerelease: false
 
