@@ -58,6 +58,7 @@ jobs:
         pyinstaller --onefile --name shuffle_engine_${{ matrix.os }} scripts/shuffle_engine.py
         pyinstaller --onefile --name anti_positional_engine_${{ matrix.os }} scripts/anti_positional_engine.py
         pyinstaller --onefile --name color_square_engine_${{ matrix.os }} scripts/color_square_engine.py
+        pyinstaller --onefile --name opposite_color_square_engine_${{ matrix.os }} scripts/opposite_color_square_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -77,6 +78,7 @@ jobs:
         copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
         copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
         copy "dist\color_square_engine_${{ matrix.os }}.exe" "release\color_square_engine_windows.exe"
+        copy "dist\opposite_color_square_engine_${{ matrix.os }}.exe" "release\opposite_color_square_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -96,6 +98,7 @@ jobs:
         cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_linux"
         cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_linux"
         cp "dist/color_square_engine_${{ matrix.os }}" "release/color_square_engine_linux"
+        cp "dist/opposite_color_square_engine_${{ matrix.os }}" "release/opposite_color_square_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -224,6 +227,7 @@ jobs:
           - **Shuffle Engine**: Moves pieces back and forth, wasting tempo
           - **Anti-Positional Engine**: Deliberately violates positional principles
           - **Color Square Engine**: Tries to move all its pieces onto squares matching its own color (white or black).
+          - **Opposite Color Square Engine**: Tries to move all its pieces onto squares matching the opponent's color (white or black).
 
           ## Tournament Results
 

@@ -57,7 +57,8 @@ def main():
         ("scripts/greedy_capture_engine.py", "greedy_capture_engine"),
         ("scripts/shuffle_engine.py", "shuffle_engine"),
         ("scripts/anti_positional_engine.py", "anti_positional_engine"),
-        ("scripts/color_square_engine.py", "color_square_engine")
+        ("scripts/color_square_engine.py", "color_square_engine"),
+        ("scripts/opposite_color_square_engine.py", "opposite_color_square_engine")
     ]
     
     successful_builds = 0

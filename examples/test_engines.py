@@ -25,6 +25,7 @@ from engines.greedy_capture_engine import GreedyCaptureEngine
 from engines.shuffle_engine import ShuffleEngine
 from engines.anti_positional_engine import AntiPositionalEngine
 from engines.color_square_engine import ColorSquareEngine
+from engines.opposite_color_square_engine import OppositeColorSquareEngine
 
 
 class EngineGame:
@@ -105,7 +106,8 @@ def test_engine_basics():
         GreedyCaptureEngine(),
         ShuffleEngine(),
         AntiPositionalEngine(),
-        ColorSquareEngine()
+        ColorSquareEngine(),
+        OppositeColorSquareEngine()
     ]
     
     for engine in engines:
@@ -146,7 +148,8 @@ def tournament():
         GreedyCaptureEngine(),
         ShuffleEngine(),
         AntiPositionalEngine(),
-        ColorSquareEngine()
+        ColorSquareEngine(),
+        OppositeColorSquareEngine()
     ]
     
     results = {}
