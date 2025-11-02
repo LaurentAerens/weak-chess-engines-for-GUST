@@ -37,6 +37,7 @@ try:
     from engines.mirror_x_engine import MirrorXEngine
     from engines.reverse_start_engine import ReverseStartEngine
     from engines.CCCP_engine import CCCPEngine
+    from engines.passafist_engine import PassafistEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -217,7 +218,8 @@ class EngineSelector(tk.Frame):
             "Anti-Positional (⭐⭐)": AntiPositionalEngine,
             "Swarm Engine (⭐⭐)": SwarmEngine,
             "Reverse Start Engine (⭐⭐)": ReverseStartEngine,
-            "CCCP Engine (⭐)": CCCPEngine
+            "CCCP Engine (⭐)": CCCPEngine,
+            "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine
         }
         
         self.create_widgets()
@@ -408,7 +410,15 @@ class EngineSelector(tk.Frame):
                 "• 2) Give check if possible\n"
                 "• 3) Capture if possible\n"
                 "• 4) Push pieces closer to enemy backline\n"
-                "• Picks randomly among equally good moves\n"  
+                "• Picks randomly among equally good moves\n",  
+
+            "Passafist Engine (⭐⭐⭐⭐⭐)":
+                "The ultimate passive engine!\n\n"
+                "• Avoids captures and checks\n"
+                "• Prioritizes piece safety above all\n"
+                "• Moves pieces to safe squares\n"
+                "• Great for learning defensive play\n"
+                "• Can be surprisingly resilient",
 
         }
         
