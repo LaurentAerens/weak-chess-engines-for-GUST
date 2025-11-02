@@ -72,25 +72,37 @@ python scripts/random_engine.py
 - **Characteristics**: Opposite of alphabetical engine, prefers moves starting with later letters
 - **Good for**: Testing pattern recognition, predictable but different behavior
 
-### 4. Blunder Engine  
+### 4. Pi Engine
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Uses Pi (3.14159...) to select moves by mapping its fractional part to move index
+- **Characteristics**: Picks move at ~14% through the sorted list, mathematically consistent
+- **Good for**: Educational purposes, demonstrating mathematical constants in games
+
+### 5. Euler Engine
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Uses Euler's number e (2.71828...) to select moves by mapping to move index
+- **Characteristics**: Picks move at ~72% through the sorted list, different pattern from Pi
+- **Good for**: Math enthusiasts, comparing mathematical constant strategies
+
+### 6. Blunder Engine  
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Actively looks for the worst possible moves
 - **Characteristics**: Evaluates positions and deliberately chooses bad moves, hangs pieces intentionally
 - **Good for**: Testing against engines that make tactical blunders
 
-### 5. Greedy Capture Engine
+### 7. Greedy Capture Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Always captures when possible, ignoring strategy
 - **Characteristics**: One-track mind focused only on capturing material
 - **Good for**: Testing against materialistic but strategically blind opponents
 
-### 6. Shuffle Engine
+### 8. Shuffle Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Prefers to move pieces back and forth without purpose
 - **Characteristics**: Creates shuffling patterns, wastes tempo, repeats positions
 - **Good for**: Testing against time-wasting, aimless play
 
-### 7. Anti-Positional Engine
+### 9. Anti-Positional Engine
 - **Weakness Level**: ⭐⭐ (Moderately Weak)
 - **Strategy**: Deliberately violates chess principles
 - **Characteristics**: Avoids central control, blocks own pawns, develops pieces poorly
@@ -249,6 +261,8 @@ python scripts/your_new_engine.py
 | Random | 40-80 | Very High | 15-25 |
 | Alphabetical | 35-75 | Very High | 12-22 |
 | Reverse Alphabetical | 35-75 | Very High | 12-22 |
+| Pi | 38-78 | Very High | 13-23 |
+| Euler | 38-78 | Very High | 13-23 |
 | Blunder | 30-60 | Extremely High | 20-30 |
 | Greedy Capture | 50-90 | High | 10-20 |
 | Shuffle | 60-120 | Medium | 5-15 |
