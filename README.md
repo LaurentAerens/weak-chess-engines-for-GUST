@@ -144,6 +144,17 @@ python scripts/random_engine.py
 - **Characteristics**: Prioritizes distance from own king, often leading to disorganized play
 - **Good for**: Testing against engines that exploit poor piece coordination
 
+### 16. Mirror Y Engine
+- **Weakness Level**: ⭐⭐⭐ ( Weak)
+- **Strategy**: Mirrors opponent's moves along the Y-axis
+- **Characteristics**: Creates symmetrical positions, often leading to passive play
+- **Good for**: Testing against engines that exploit lack of originality
+
+### 17. Mirror X Engine
+- **Weakness Level**: ⭐⭐⭐ ( Weak)
+- **Strategy**: Mirrors opponent's moves along the X-axis
+- **Characteristics**: Creates symmetrical positions, often leading to passive play
+- **Good for**: Testing against engines that exploit lack of originality
 
 ## 🛠️ Technical Details
 

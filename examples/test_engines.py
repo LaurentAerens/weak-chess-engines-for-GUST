@@ -29,6 +29,8 @@ from engines.opposite_color_square_engine import OppositeColorSquareEngine
 from engines.runaway_engine import RunawayEngine
 from engines.swarm_engine import SwarmEngine
 from engines.huddle_engine import HuddleEngine
+from engines.mirror_y_engine import MirrorYEngine
+from engines.mirror_x_engine import MirrorXEngine
 
 
 class EngineGame:
@@ -113,7 +115,9 @@ def test_engine_basics():
         OppositeColorSquareEngine(),
         SwarmEngine(),
         HuddleEngine(),
-        RunawayEngine()
+        RunawayEngine(),
+        MirrorYEngine(),
+        MirrorXEngine()
     ]
     
     for engine in engines:

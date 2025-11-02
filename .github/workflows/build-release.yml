@@ -62,6 +62,8 @@ jobs:
         pyinstaller --onefile --name swarm_engine_${{ matrix.os }} scripts/swarm_engine.py
         pyinstaller --onefile --name huddle_engine_${{ matrix.os }} scripts/huddle_engine.py
         pyinstaller --onefile --name runaway_engine_${{ matrix.os }} scripts/runaway_engine.py
+        pyinstaller --onefile --name mirror_y_engine_${{ matrix.os }} scripts/mirror_y_engine.py
+        pyinstaller --onefile --name mirror_x_engine_${{ matrix.os }} scripts/mirror_x_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -85,6 +87,8 @@ jobs:
         copy "dist\swarm_engine_${{ matrix.os }}.exe" "release\swarm_engine_windows.exe"
         copy "dist\huddle_engine_${{ matrix.os }}.exe" "release\huddle_engine_windows.exe"
         copy "dist\runaway_engine_${{ matrix.os }}.exe" "release\runaway_engine_windows.exe"
+        copy "dist\mirror_y_engine_${{ matrix.os }}.exe" "release\mirror_y_engine_windows.exe"
+        copy "dist\mirror_x_engine_${{ matrix.os }}.exe" "release\mirror_x_engine_windows.exe"
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -108,6 +112,8 @@ jobs:
         cp "dist/swarm_engine_${{ matrix.os }}" "release/swarm_engine_linux"
         cp "dist/huddle_engine_${{ matrix.os }}" "release/huddle_engine_linux"
         cp "dist/runaway_engine_${{ matrix.os }}" "release/runaway_engine_linux"
+        cp "dist/mirror_y_engine_${{ matrix.os }}" "release/mirror_y_engine_linux"
+        cp "dist/mirror_x_engine_${{ matrix.os }}" "release/mirror_x_engine_linux"
         
         # Make executables... executable
         chmod +x release/*
@@ -262,6 +268,8 @@ jobs:
           - **Swarm Engine**: Coordinates multiple pieces to swarm the opponent's position.
           - **Huddle Engine**: Groups pieces together for mutual support and defense.
           - **Runaway Engine**: Attempts to escape from threats by moving pieces away from danger.
+          - **Mirror Y Engine**: Mirrors opponent's moves along the Y-axis.
+          - **Mirror X Engine**: Mirrors opponent's moves along the X-axis.
 
           ## Tournament Results
 

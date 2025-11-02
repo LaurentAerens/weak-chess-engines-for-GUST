@@ -17,6 +17,8 @@ from .opposite_color_square_engine import OppositeColorSquareEngine
 from .huddle_engine import HuddleEngine
 from .swarm_engine import SwarmEngine
 from .runaway_engine import RunawayEngine
+from .mirror_y_engine import MirrorYEngine
+from .mirror_x_engine import MirrorXEngine
 
 __all__ = [
     'RandomEngine',
@@ -33,5 +35,7 @@ __all__ = [
     'OppositeColorSquareEngine',
     'SwarmEngine',
     'HuddleEngine',
-    'RunawayEngine'
+    'RunawayEngine',
+    'MirrorYEngine'
+    , 'MirrorXEngine'
 ]
