@@ -16,6 +16,7 @@ class OppositeColorSquareEngine(BaseUCIEngine):
         super().__init__("Opposite Color Square Engine", "Laurent Aerens")
 
     def get_best_move(self, think_time: float):
+        import random
         time.sleep(min(think_time, 0.2))
         if self.stop_thinking:
             return None
@@ -36,7 +37,7 @@ class OppositeColorSquareEngine(BaseUCIEngine):
             return not is_white if my_color == chess.WHITE else is_white
         # Score moves by how many pieces end up on opposite color squares
         best_score = -float('inf')
-        best_move = legal_moves[0]
+        best_moves = []
         for move in legal_moves:
             test_board = self.board.copy()
             test_board.push(move)
@@ -51,8 +52,14 @@ class OppositeColorSquareEngine(BaseUCIEngine):
                 score += 2
             if score > best_score:
                 best_score = score
-                best_move = move
-        return best_move
+                best_moves = [move]
+            elif score == best_score:
+                best_moves.append(move)
+        # Always return a move, even if none place a piece on the opposite color square
+        if best_moves:
+            return random.choice(best_moves)
+        else:
+            return random.choice(legal_moves)
 
 if __name__ == "__main__":
     run_engine(OppositeColorSquareEngine)

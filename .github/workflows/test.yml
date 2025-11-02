@@ -42,6 +42,9 @@ jobs:
         from engines.anti_positional_engine import AntiPositionalEngine
         from engines.color_square_engine import ColorSquareEngine
         from engines.opposite_color_square_engine import OppositeColorSquareEngine
+        from engines.swarm_engine import SwarmEngine
+        from engines.huddle_engine import HuddleEngine
+        from engines.runaway_engine import RunawayEngine
         from base_engine import BaseUCIEngine
         print('All engines imported successfully!')"
 
@@ -60,7 +63,10 @@ jobs:
         from engines.anti_positional_engine import AntiPositionalEngine
         from engines.color_square_engine import ColorSquareEngine
         from engines.opposite_color_square_engine import OppositeColorSquareEngine
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine()]
+        from engines.swarm_engine import SwarmEngine
+        from engines.huddle_engine import HuddleEngine
+        from engines.runaway_engine import RunawayEngine
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine()]
         for engine in engines:
           print(f'Created {engine.name} by {engine.author}')
           print('All engines created successfully!')"
@@ -80,8 +86,11 @@ jobs:
         from engines.anti_positional_engine import AntiPositionalEngine
         from engines.color_square_engine import ColorSquareEngine
         from engines.opposite_color_square_engine import OppositeColorSquareEngine
+        from engines.swarm_engine import SwarmEngine
+        from engines.huddle_engine import HuddleEngine
+        from engines.runaway_engine import RunawayEngine
 
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine()]
+        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine()]
         for engine in engines:
           engine.board = chess.Board()
           move = engine.get_best_move(0.1)

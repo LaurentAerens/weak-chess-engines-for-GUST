@@ -54,77 +54,96 @@ python scripts/random_engine.py
 
 ### 🤖 Available Engines
 
-### 1. Random Engine
+### 1. Huddle Engine
+- **Weakness Level**: ⭐⭐⭐⭐⭐ (Extremely Weak)
+- **Strategy**: Pieces huddle together for protection
+- **Characteristics**: No regard for board control, focuses on piece safety
+- **Good for**: Teaching basic principles of piece coordination
+
+### 2. Random Engine
 - **Weakness Level**: ⭐⭐⭐⭐⭐ (Extremely Weak)
 - **Strategy**: Plays completely random legal moves
 - **Characteristics**: No planning, no evaluation, pure randomness
 - **Good for**: Absolute baseline testing
 
-### 2. Alphabetical Engine
+### 3. Alphabetical Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Always picks the first move alphabetically by algebraic notation
 - **Characteristics**: Completely predictable, sorts moves like "a4", "b3", "Bc4", etc.
 - **Good for**: Learning chess notation, highly exploitable patterns
 
-### 3. Reverse Alphabetical Engine
+### 4. Reverse Alphabetical Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Always picks the last move alphabetically by algebraic notation
 - **Characteristics**: Opposite of alphabetical engine, prefers moves starting with later letters
 - **Good for**: Testing pattern recognition, predictable but different behavior
 
-### 4. Pi Engine
+### 5. Pi Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Uses Pi (3.14159...) to select moves by mapping its fractional part to move index
 - **Characteristics**: Picks move at ~14% through the sorted list, mathematically consistent
 - **Good for**: Educational purposes, demonstrating mathematical constants in games
 
-### 5. Euler Engine
+### 6. Euler Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Uses Euler's number e (2.71828...) to select moves by mapping to move index
 - **Characteristics**: Picks move at ~72% through the sorted list, different pattern from Pi
 - **Good for**: Math enthusiasts, comparing mathematical constant strategies
 
-### 6. Suicide King
+### 7. Suicide King
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Tries to move the king as close as possible to the opponent's king
 - **Characteristics**: Recklessly advances king into danger, uses Chebyshev distance for proximity
 - **Good for**: Practicing king attacks and checkmate patterns, hilarious gameplay
 
-### 7. Blunder Engine  
+### 8. Blunder Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Actively looks for the worst possible moves
 - **Characteristics**: Evaluates positions and deliberately chooses bad moves, hangs pieces intentionally
 - **Good for**: Testing against engines that make tactical blunders
 
-### 8. Color Square Engine
+### 9. Color Square Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Tries to move all its pieces onto squares matching its own color (white or black).
 - **Characteristics**: No regard for opponent's threats, purely focuses on color matching
 - **Good for**: Teaching basic concepts of color squares and piece movement
 
-### 9. Opposite Color Square Engine
+### 10. Opposite Color Square Engine
 - **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
 - **Strategy**: Tries to move all its pieces onto squares matching the opposite color (white or black).
 - **Characteristics**: No regard for opponent's threats, purely focuses on color matching
 - **Good for**: Teaching advanced concepts of color squares and piece movement
 
-### 10. Greedy Capture Engine
+### 11. Greedy Capture Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Always captures when possible, ignoring strategy
 - **Characteristics**: One-track mind focused only on capturing material
 - **Good for**: Testing against materialistic but strategically blind opponents
 
-### 11. Shuffle Engine
+### 12. Shuffle Engine
 - **Weakness Level**: ⭐⭐⭐ (Weak)
 - **Strategy**: Prefers to move pieces back and forth without purpose
 - **Characteristics**: Creates shuffling patterns, wastes tempo, repeats positions
 - **Good for**: Testing against time-wasting, aimless play
 
-### 12. Anti-Positional Engine
+### 13. Runaway Engine
+- **Weakness Level**: ⭐⭐⭐ (Weak)
+- **Strategy**: Moves king pieces away from the opponent's pieces
+- **Characteristics**: Prioritizes king safety over all else, often leading to passive play
+- **Good for**: Practicing king maneuvers and understanding piece safety
+
+### 14. Anti-Positional Engine
 - **Weakness Level**: ⭐⭐ (Moderately Weak)
 - **Strategy**: Deliberately violates chess principles
 - **Characteristics**: Avoids central control, blocks own pawns, develops pieces poorly
 - **Good for**: Testing against opponents who understand tactics but ignore positional play
+
+### 15. Swarm Engine
+- **Weakness Level**: ⭐⭐ (Moderately Weak)
+- **Strategy**: Runs away from it's own king as far as possible
+- **Characteristics**: Prioritizes distance from own king, often leading to disorganized play
+- **Good for**: Testing against engines that exploit poor piece coordination
+
 
 ## 🛠️ Technical Details
 

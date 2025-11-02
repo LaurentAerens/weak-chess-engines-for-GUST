@@ -26,6 +26,9 @@ from engines.shuffle_engine import ShuffleEngine
 from engines.anti_positional_engine import AntiPositionalEngine
 from engines.color_square_engine import ColorSquareEngine
 from engines.opposite_color_square_engine import OppositeColorSquareEngine
+from engines.runaway_engine import RunawayEngine
+from engines.swarm_engine import SwarmEngine
+from engines.huddle_engine import HuddleEngine
 
 
 class EngineGame:
@@ -107,7 +110,10 @@ def test_engine_basics():
         ShuffleEngine(),
         AntiPositionalEngine(),
         ColorSquareEngine(),
-        OppositeColorSquareEngine()
+        OppositeColorSquareEngine(),
+        SwarmEngine(),
+        HuddleEngine(),
+        RunawayEngine()
     ]
     
     for engine in engines:

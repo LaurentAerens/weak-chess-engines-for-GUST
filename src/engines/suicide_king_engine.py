@@ -36,8 +36,10 @@ class SuicideKingEngine(BaseUCIEngine):
             return max(abs(rank1 - rank2), abs(file1 - file2))
 
         # Find king moves that get closer
+        import random
         king_moves = []
         best_distance = chebyshev_distance(our_king_square, opponent_king_square)
+        min_distance = best_distance
         for move in legal_moves:
             if move.from_square == our_king_square:
                 test_board = self.board.copy()
@@ -45,13 +47,13 @@ class SuicideKingEngine(BaseUCIEngine):
                 new_king_square = test_board.king(self.board.turn)
                 if new_king_square is not None:
                     dist = chebyshev_distance(new_king_square, opponent_king_square)
-                    if dist < best_distance:
-                        king_moves.append((dist, move))
-
+                    if dist < min_distance:
+                        min_distance = dist
+                        king_moves = [move]
+                    elif dist == min_distance:
+                        king_moves.append(move)
         if king_moves:
-            # Pick the king move that gets closest
-            king_moves.sort(key=lambda x: x[0])
-            return king_moves[0][1]
+            return random.choice(king_moves)
 
         # If no king move gets closer, prioritize moving blocking pieces or capturing enemy pieces
         # Find squares between our king and enemy king (simple straight line)
@@ -95,9 +97,9 @@ class SuicideKingEngine(BaseUCIEngine):
 
         # Prefer captures first
         if capture_moves:
-            return capture_moves[0]
+            return random.choice(capture_moves)
         # Then prefer blocking piece moves
         if blocking_moves:
-            return blocking_moves[0]
+            return random.choice(blocking_moves)
         # Otherwise, just play any move
-        return legal_moves[0]
+        return random.choice(legal_moves)
