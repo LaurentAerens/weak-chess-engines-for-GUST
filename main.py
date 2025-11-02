@@ -33,6 +33,8 @@ try:
     from engines.swarm_engine import SwarmEngine
     from engines.huddle_engine import HuddleEngine
     from engines.runaway_engine import RunawayEngine
+    from engines.mirror_y_engine import MirrorYEngine
+    from engines.mirror_x_engine import MirrorXEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -208,6 +210,8 @@ class EngineSelector(tk.Frame):
             "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
             "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
             "Runaway Engine (⭐⭐⭐)": RunawayEngine,
+            "Mirror Y Engine (⭐⭐⭐)": MirrorYEngine,
+            "Mirror X Engine (⭐⭐⭐)": MirrorXEngine,
             "Anti-Positional (⭐⭐)": AntiPositionalEngine,
             "Swarm Engine (⭐⭐)": SwarmEngine
         }
@@ -374,8 +378,21 @@ class EngineSelector(tk.Frame):
                 "• Ignores all other considerations\n"
                 "• Creates chaotic positions\n"
                 "• Can result in aggressive offensive play\n"
-                "• Unpredictable and difficult to counter\n"
+                "• Unpredictable and difficult to counter\n",
 
+            "Mirror Y Engine (⭐⭐⭐)":
+                "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the Y axis.\n\n"
+                "• Attempts to mirror the board state vertically\n"
+                "• Picks randomly among equally mirrored moves\n"
+                "• If no move helps, plays a random legal move\n"
+                "• Fun for testing symmetry and creative play\n"
+            ,
+            "Mirror X Engine (⭐⭐⭐)":
+                "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the X axis.\n\n"
+                "• Attempts to mirror the board state across files (a<->h)\n"
+                "• Picks randomly among equally mirrored moves\n"
+                "• If no move helps, plays a random legal move\n"
+                "• Fun for testing symmetry and creative play\n"
         }
         
         self.info_text.config(state=tk.NORMAL)
