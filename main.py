@@ -38,6 +38,7 @@ try:
     from engines.reverse_start_engine import ReverseStartEngine
     from engines.CCCP_engine import CCCPEngine
     from engines.passafist_engine import PassafistEngine
+    from engines.single_player_engine import SinglePlayerEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -219,7 +220,8 @@ class EngineSelector(tk.Frame):
             "Swarm Engine (⭐⭐)": SwarmEngine,
             "Reverse Start Engine (⭐⭐)": ReverseStartEngine,
             "CCCP Engine (⭐)": CCCPEngine,
-            "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine
+            "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine,
+            "Single Player Engine (⭐)": SinglePlayerEngine
         }
         
         self.create_widgets()
@@ -419,6 +421,14 @@ class EngineSelector(tk.Frame):
                 "• Moves pieces to safe squares\n"
                 "• Great for learning defensive play\n"
                 "• Can be surprisingly resilient",
+
+            "Single Player Engine (⭐)":
+                "A basic engine focused on simple material evaluation!\n\n"
+                "• Evaluates moves based on material gain\n"
+                "• Looks ahead a few moves to assess outcomes\n"
+                "• Simple but effective for casual play\n"
+                "• Limited understanding of complex tactics\n"
+                "• Thinks of every move as a it's to play doesn't think the opponent can make a move\n"
 
         }
         

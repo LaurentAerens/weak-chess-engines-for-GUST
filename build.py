@@ -66,7 +66,8 @@ def main():
         ("scripts/mirror_x_engine.py", "mirror_x_engine"),
         ("scripts/reverse_start_engine.py", "reverse_start_engine"),
         ("scripts/CCCP_engine.py", "CCCP_engine"),
-        ("scripts/passafist_engine.py", "passafist_engine")
+        ("scripts/passafist_engine.py", "passafist_engine"),
+        ("scripts/single_player_engine.py", "single_player_engine")
     ]
     
     successful_builds = 0

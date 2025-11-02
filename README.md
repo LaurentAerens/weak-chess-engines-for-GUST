@@ -174,6 +174,15 @@ python scripts/random_engine.py
 - **Characteristics**: Moves pieces to safe squares, often leading to passive play
 - **Good for**: Learning defensive play and piece safety
 
+### 21. Single Player Engine
+- **Weakness Level**: ⭐ ( Almost Medium)
+- **Strategy**: A basic engine focused on simple material evaluation
+- **Characteristics**: 
+  - Evaluates moves based on material gain
+  - Looks ahead a few moves to assess outcomes
+  - Simple but effective for casual play
+  - Limited understanding of complex tactics
+  - Thinks of every move as a it's to play doesn't think the opponent can make a move
 
 ## 🛠️ Technical Details
 
