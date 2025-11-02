@@ -1,3 +1,4 @@
+from .strangler_engine import StranglerEngine
 """
 Collection of weak chess engines for testing and analysis.
 """
@@ -22,6 +23,7 @@ from .mirror_x_engine import MirrorXEngine
 from .CCCP_engine import CCCPEngine
 from .reverse_start_engine import ReverseStartEngine
 from .single_player_engine import SinglePlayerEngine
+from .strangler_engine import StranglerEngine
 
 __all__ = [
     'RandomEngine',
@@ -44,5 +46,6 @@ __all__ = [
     'ReverseStartEngine',
     'CCCPEngine',
     'PassafistEngine',
-    'SinglePlayerEngine'
+    'SinglePlayerEngine',
+    'StranglerEngine'
 ]

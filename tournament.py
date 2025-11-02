@@ -30,6 +30,7 @@ from src.engines.reverse_start_engine import ReverseStartEngine
 from src.engines.CCCP_engine import CCCPEngine
 from src.engines.passafist_engine import PassafistEngine
 from src.engines.single_player_engine import SinglePlayerEngine
+from src.engines.strangler_engine import StranglerEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -52,7 +53,8 @@ ENGINES = [
     ("Reverse Start", ReverseStartEngine),
     ("CCCP", CCCPEngine),
     ("Passafist", PassafistEngine),
-    ("Single Player", SinglePlayerEngine)
+    ("Single Player", SinglePlayerEngine),
+    ("Strangler", StranglerEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

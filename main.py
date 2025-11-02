@@ -39,6 +39,7 @@ try:
     from engines.CCCP_engine import CCCPEngine
     from engines.passafist_engine import PassafistEngine
     from engines.single_player_engine import SinglePlayerEngine
+    from engines.strangler_engine import StranglerEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -221,7 +222,8 @@ class EngineSelector(tk.Frame):
             "Reverse Start Engine (⭐⭐)": ReverseStartEngine,
             "CCCP Engine (⭐)": CCCPEngine,
             "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine,
-            "Single Player Engine (⭐)": SinglePlayerEngine
+            "Single Player Engine (⭐)": SinglePlayerEngine,
+            "Strangler Engine (⭐)": StranglerEngine
         }
         
         self.create_widgets()
@@ -429,6 +431,13 @@ class EngineSelector(tk.Frame):
                 "• Simple but effective for casual play\n"
                 "• Limited understanding of complex tactics\n"
                 "• Thinks of every move as a it's to play doesn't think the opponent can make a move\n"
+
+            "Strangler Engine (⭐)":
+                "Gradually restricts opponent's mobility!\n\n"
+                "• Prioritizes moves that limit opponent's options\n"
+                "• Aims to control key squares and files\n"
+                "• Can lead to slow but steady advantages\n"
+                "• Effective against aggressive opponents\n"
 
         }
         
