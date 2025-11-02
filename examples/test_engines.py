@@ -31,6 +31,7 @@ from engines.swarm_engine import SwarmEngine
 from engines.huddle_engine import HuddleEngine
 from engines.mirror_y_engine import MirrorYEngine
 from engines.mirror_x_engine import MirrorXEngine
+from engines.reverse_start_engine import ReverseStartEngine
 
 
 class EngineGame:
@@ -117,7 +118,8 @@ def test_engine_basics():
         HuddleEngine(),
         RunawayEngine(),
         MirrorYEngine(),
-        MirrorXEngine()
+        MirrorXEngine(),
+        ReverseStartEngine()
     ]
     
     for engine in engines:
@@ -141,64 +143,6 @@ def test_engine_basics():
         else:
             print(f"  ✗ Failed in complex position: {move}")
 
-
-def tournament():
-    """Run a small tournament between engines."""
-    print("\nWeak Engine Tournament")
-    print("=" * 40)
-    
-    engines = [
-        RandomEngine(),
-        AlphabeticalEngine(),
-        ReverseAlphabeticalEngine(),
-        PiEngine(),
-        EulerEngine(),
-        SuicideKingEngine(),
-        BlunderEngine(),
-        GreedyCaptureEngine(),
-        ShuffleEngine(),
-        AntiPositionalEngine(),
-        ColorSquareEngine(),
-        OppositeColorSquareEngine()
-    ]
-    
-    results = {}
-    for engine in engines:
-        results[engine.name] = {'wins': 0, 'losses': 0, 'draws': 0}
-    
-    games_played = 0
-    total_games = len(engines) * (len(engines) - 1)  # Each pair plays once
-    
-    for i, white_engine in enumerate(engines):
-        for j, black_engine in enumerate(engines):
-            if i != j:  # Don't play against self
-                games_played += 1
-                print(f"\nGame {games_played}/{total_games}")
-                
-                game = EngineGame(white_engine, black_engine, max_moves=50)
-                result = game.play_game(time_per_move=0.2)
-                
-                if result == "1-0":  # White wins
-                    results[white_engine.name]['wins'] += 1
-                    results[black_engine.name]['losses'] += 1
-                elif result == "0-1":  # Black wins
-                    results[black_engine.name]['wins'] += 1
-                    results[white_engine.name]['losses'] += 1
-                else:  # Draw
-                    results[white_engine.name]['draws'] += 1
-                    results[black_engine.name]['draws'] += 1
-    
-    # Print tournament results
-    print("\n" + "=" * 60)
-    print("TOURNAMENT RESULTS")
-    print("=" * 60)
-    print(f"{'Engine':<25} {'Wins':<6} {'Losses':<6} {'Draws':<6} {'Score':<6}")
-    print("-" * 60)
-    
-    for engine_name, stats in results.items():
-        total_games = stats['wins'] + stats['losses'] + stats['draws']
-        score = stats['wins'] + 0.5 * stats['draws']
-        print(f"{engine_name:<25} {stats['wins']:<6} {stats['losses']:<6} {stats['draws']:<6} {score:<6.1f}")
 
 
 def demonstrate_uci():
@@ -235,14 +179,6 @@ if __name__ == "__main__":
         # Demonstrate UCI
         demonstrate_uci()
         
-        # Ask user if they want to run tournament
-        print("\n" + "=" * 50)
-        response = input("Run tournament? (y/N): ").lower().strip()
-        
-        if response in ['y', 'yes']:
-            tournament()
-        else:
-            print("Skipping tournament.")
             
     except KeyboardInterrupt:
         print("\nTest interrupted by user.")

@@ -63,7 +63,8 @@ def main():
         ("scripts/runaway_engine.py", "runaway_engine"),
         ("scripts/huddle_engine.py", "huddle_engine"),
         ("scripts/mirror_y_engine.py", "mirror_y_engine"),
-        ("scripts/mirror_x_engine.py", "mirror_x_engine")
+        ("scripts/mirror_x_engine.py", "mirror_x_engine"),
+        ("scripts/reverse_start_engine.py", "reverse_start_engine"),
     ]
     
     successful_builds = 0

@@ -35,6 +35,7 @@ try:
     from engines.runaway_engine import RunawayEngine
     from engines.mirror_y_engine import MirrorYEngine
     from engines.mirror_x_engine import MirrorXEngine
+    from engines.reverse_start_engine import ReverseStartEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -213,7 +214,8 @@ class EngineSelector(tk.Frame):
             "Mirror Y Engine (⭐⭐⭐)": MirrorYEngine,
             "Mirror X Engine (⭐⭐⭐)": MirrorXEngine,
             "Anti-Positional (⭐⭐)": AntiPositionalEngine,
-            "Swarm Engine (⭐⭐)": SwarmEngine
+            "Swarm Engine (⭐⭐)": SwarmEngine,
+            "Reverse Start Engine (⭐⭐)": ReverseStartEngine
         }
         
         self.create_widgets()
@@ -385,14 +387,16 @@ class EngineSelector(tk.Frame):
                 "• Attempts to mirror the board state vertically\n"
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
-                "• Fun for testing symmetry and creative play\n"
-            ,
+                "• Fun for testing symmetry and creative play\n",
             "Mirror X Engine (⭐⭐⭐)":
                 "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the X axis.\n\n"
                 "• Attempts to mirror the board state across files (a<->h)\n"
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
-                "• Fun for testing symmetry and creative play\n"
+                "• Fun for testing symmetry and creative play\n",
+            "Reverse Start Engine (⭐⭐)":
+                "tries to get to the enemy's starting position as quickly as possible!\n\n"
+                "• Prioritizes moves that lead to the opponent's initial setup\n"   
         }
         
         self.info_text.config(state=tk.NORMAL)

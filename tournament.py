@@ -1,3 +1,5 @@
+# If True, engines will also play against themselves
+SELF_PLAY = False
 import os
 import sys
 import subprocess
@@ -24,6 +26,7 @@ from src.engines.huddle_engine import HuddleEngine
 from src.engines.swarm_engine import SwarmEngine
 from src.engines.mirror_y_engine import MirrorYEngine
 from src.engines.mirror_x_engine import MirrorXEngine
+from src.engines.reverse_start_engine import ReverseStartEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -42,7 +45,8 @@ ENGINES = [
     ("Huddle", HuddleEngine),
     ("Swarm", SwarmEngine),
     ("Mirror Y", MirrorYEngine),
-    ("Mirror X", MirrorXEngine)
+    ("Mirror X", MirrorXEngine),
+    ("Reverse Start", ReverseStartEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})
@@ -58,12 +62,15 @@ import csv
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+
 parser = argparse.ArgumentParser(description='Run round-robin tournament between weak engines')
 parser.add_argument('--rounds', '-r', type=int, default=1, help='Number of full round-robin rounds to run (default: 1)')
+parser.add_argument('--self-play', type=str, default='false', help='Enable engines to play against themselves (true/false, default: false)')
 args = parser.parse_args()
 ROUNDS = max(1, args.rounds)
+SELF_PLAY = args.self_play.lower() == 'true'
 
-print(f"Starting round-robin tournament... Rounds: {ROUNDS}")
+print(f"Starting round-robin tournament... Rounds: {ROUNDS}, Self-play: {SELF_PLAY}")
 
 # Store all games for PGN export
 all_games = []
@@ -122,7 +129,7 @@ def game_task(white_name, white_class, black_name, black_class):
 tasks = []
 for i, (name1, class1) in enumerate(ENGINES):
     for j, (name2, class2) in enumerate(ENGINES):
-        if i == j:
+        if i == j and not SELF_PLAY:
             continue
         for color in [chess.WHITE, chess.BLACK]:
             white_name, white_class = (name1, class1) if color == chess.WHITE else (name2, class2)
