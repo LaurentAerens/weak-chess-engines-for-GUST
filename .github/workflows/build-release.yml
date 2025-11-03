@@ -248,7 +248,8 @@ jobs:
     - name: Convert Tournament Table to Markdown
       id: tournament_table
       run: |
-        python - <<'PY' > table_output.txt
+        # Create full markdown table
+        python - <<'PY' > final_release/tournament_results.md
         import csv, sys
 
         rows = []
@@ -258,19 +259,22 @@ jobs:
                 for row in reader:
                     rows.append(row)
         except FileNotFoundError:
-            print('| No data |')
+            print('Tournament results not available')
             sys.exit(0)
 
         if not rows:
-            print('| No data |')
+            print('Tournament results not available')
             sys.exit(0)
 
         header = rows[0]
         data = rows[1:]
 
         def mkrow(r):
-            return '| ' + ' | '.join(r) + ' |'
+            # Escape pipe characters
+            escaped = [str(c).replace('|', '\\|') for c in r]
+            return '| ' + ' | '.join(escaped) + ' |'
 
+        # Full table for markdown file
         md_lines = []
         md_lines.append(mkrow(header))
         md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
@@ -281,10 +285,52 @@ jobs:
             print(l)
         PY
         
-        # Write the table to GITHUB_OUTPUT using heredoc format
-        echo "table<<EOF" >> $GITHUB_OUTPUT
-        cat table_output.txt >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        # Create summary table (top 10) for release notes
+        python - <<'PY' > table_summary.txt
+        import csv, sys
+
+        rows = []
+        try:
+            with open('final_release/tournament_results.csv', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    rows.append(row)
+        except FileNotFoundError:
+            print('Download tournament_results.csv or tournament_results.md for full results.')
+            sys.exit(0)
+
+        if not rows:
+            print('Download tournament_results.csv or tournament_results.md for full results.')
+            sys.exit(0)
+
+        header = rows[0]
+        data = rows[1:]
+        
+        total_engines = len(data)
+        
+        # Show top 10 only
+        top_data = data[:10]
+
+        def mkrow(r):
+            escaped = [str(c).replace('|', '\\|') for c in r]
+            return '| ' + ' | '.join(escaped) + ' |'
+
+        md_lines = []
+        md_lines.append('### Top 10 Results (Download tournament_results.md for full table with all ' + str(total_engines) + ' engines)')
+        md_lines.append('')
+        md_lines.append(mkrow(header))
+        md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
+        for r in top_data:
+            md_lines.append(mkrow(r))
+
+        for l in md_lines:
+            print(l)
+        PY
+        
+        # Write the summary table to GITHUB_OUTPUT
+        echo "table<<TOURNAMENT_TABLE_EOF" >> $GITHUB_OUTPUT
+        cat table_summary.txt >> $GITHUB_OUTPUT
+        echo "TOURNAMENT_TABLE_EOF" >> $GITHUB_OUTPUT
 
       shell: bash
 
@@ -342,6 +388,11 @@ jobs:
 
           ${{ steps.tournament_table.outputs.table }}
 
+          📊 **Full tournament results with all engines are available in the release assets:**
+          - `tournament_results.md` - Full markdown table with all engines
+          - `tournament_results.csv` - Raw CSV data
+          - `tournament_games.pgn` - All game records in PGN format
+
           ## Platform Support:
 
           - Windows (x64)
@@ -392,3 +443,36 @@ jobs:
         asset_path: ./weak-chess-engines-all-platforms.zip
         asset_name: weak-chess-engines-all-platforms.zip
         asset_content_type: application/zip
+
+    - name: Upload Tournament Results Markdown
+      if: hashFiles('final_release/tournament_results.md') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./final_release/tournament_results.md
+        asset_name: tournament_results.md
+        asset_content_type: text/markdown
+
+    - name: Upload Tournament Results CSV
+      if: hashFiles('final_release/tournament_results.csv') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./final_release/tournament_results.csv
+        asset_name: tournament_results.csv
+        asset_content_type: text/csv
+
+    - name: Upload Tournament Games PGN
+      if: hashFiles('final_release/tournament_games.pgn') != ''
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./final_release/tournament_games.pgn
+        asset_name: tournament_games.pgn
+        asset_content_type: text/plain
