@@ -73,6 +73,7 @@ jobs:
         pyinstaller --onefile --name opening_book_engine_${{ matrix.os }} scripts/opening_book_engine.py
         pyinstaller --onefile --name rare_opening_book_engine_${{ matrix.os }} scripts/rare_opening_book_engine.py
         pyinstaller --onefile --name lawyer_engine_${{ matrix.os }} scripts/lawyer_engine.py
+        pyinstaller --onefile --name criminal_engine_${{ matrix.os }} scripts/criminal_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -107,6 +108,8 @@ jobs:
         copy "dist\opening_book_engine_${{ matrix.os }}.exe" "release\opening_book_engine_windows.exe"
         copy "dist\rare_opening_book_engine_${{ matrix.os }}.exe" "release\rare_opening_book_engine_windows.exe"
         copy "dist\lawyer_engine_${{ matrix.os }}.exe" "release\lawyer_engine_windows.exe"
+        copy "dist\criminal_engine_${{ matrix.os }}.exe" "release\criminal_engine_windows.exe"
+
         # PowerShell syntax for file existence and copying
         if (Test-Path "src\engines\book\opening_book.db") {
           Copy-Item "src\engines\book\opening_book.db" "release\opening_book.db"
@@ -148,6 +151,7 @@ jobs:
         cp "dist/opening_book_engine_${{ matrix.os }}" "release/opening_book_engine_linux"
         cp "dist/rare_opening_book_engine_${{ matrix.os }}" "release/rare_opening_book_engine_linux"
         cp "dist/lawyer_engine_${{ matrix.os }}" "release/lawyer_engine_linux"
+        cp "dist/criminal_engine_${{ matrix.os }}" "release/criminal_engine_linux"
 
         # copy sqlite opening book into release if present
         if [ -f src/engines/book/opening_book.db ]; then
@@ -328,7 +332,8 @@ jobs:
           - **Opening Book Engine**: An engine that plays moves from a predefined opening book.
           - **Rare Opening Book Engine**: An engine that plays moves from a rare and uncommon opening book.
           - **Lawyer Engine**: Tries to maximize its legal moves.
-
+          - **Criminal Engine**: Tries to minimize its own legal moves.
+          
           ## Tournament Results
 
           ${{ steps.tournament_table.outputs.table }}

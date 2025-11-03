@@ -44,6 +44,7 @@ try:
     from engines.opening_book_engine import OpeningBookEngine
     from engines.rare_opening_book_engine import RareOpeningBookEngine
     from engines.lawyer_engine import LawyerEngine
+    from engines.criminal_engine import CriminalEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -231,7 +232,8 @@ class EngineSelector(tk.Frame):
             "Mover Engine ": MoverEngine,
             "Opening Book Engine ": OpeningBookEngine,
             "Rare Opening Book Engine ": RareOpeningBookEngine,
-            "Lawyer Engine ": LawyerEngine
+            "Lawyer Engine ": LawyerEngine,
+            "Criminal Engine ": CriminalEngine
         }
         
         self.create_widgets()
@@ -475,8 +477,13 @@ class EngineSelector(tk.Frame):
                 "• Prioritizes moves that are legally complex\n"
                 "• Aims to create situations with many legal options\n"
                 "• Great for learning the intricacies of chess rules\n"
-                "• Can lead to unexpected tactical opportunities\n"
-                
+                "• Can lead to unexpected tactical opportunities\n",
+            "Criminal Engine":
+                "Tries to minimize its own legal options!\n\n"
+                "• Avoids complex legal situations\n"
+                "• Aims to create a chaotic board state\n"
+                "• Great for surprising opponents with unconventional moves\n"
+                "• Can be difficult to predict\n"
 
         }
         

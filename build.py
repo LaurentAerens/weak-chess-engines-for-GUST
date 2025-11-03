@@ -72,7 +72,8 @@ def main():
         ("scripts/mover_engine.py", "mover_engine"),
         ("scripts/opening_book_engine.py", "opening_book_engine"),
         ("scripts/rare_opening_book_engine.py", "rare_opening_book_engine"),
-        ("scripts/lawyer_engine.py", "lawyer_engine")
+        ("scripts/lawyer_engine.py", "lawyer_engine"),
+        ("scripts/criminal_engine.py", "criminal_engine")
     ]
     
     successful_builds = 0

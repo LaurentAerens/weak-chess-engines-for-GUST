@@ -56,6 +56,8 @@ jobs:
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
         from engines.lawyer_engine import LawyerEngine
+        from engines.criminal_engine import CriminalEngine
+
         from base_engine import BaseUCIEngine
         print('All engines imported successfully!')"
 
@@ -88,6 +90,7 @@ jobs:
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
         from engines.lawyer_engine import LawyerEngine
+        from engines.criminal_engine import CriminalEngine
 
         engines = [
           RandomEngine(),
@@ -116,6 +119,7 @@ jobs:
           OpeningBookEngine(),
           RareOpeningBookEngine(),
           LawyerEngine(),
+          CriminalEngine(),
         ]
         for engine in engines:
           print(f'Created {engine.name} by {engine.author}')
@@ -150,6 +154,7 @@ jobs:
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
         from engines.lawyer_engine import LawyerEngine
+        from engines.criminal_engine import CriminalEngine
 
         engines = [
           RandomEngine(),
@@ -178,6 +183,7 @@ jobs:
           OpeningBookEngine(),
           RareOpeningBookEngine(),
           LawyerEngine(),
+          CriminalEngine(),
         ]
         for engine in engines:
           engine.board = chess.Board()

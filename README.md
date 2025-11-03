@@ -195,6 +195,22 @@ python scripts/random_engine.py
   - Switches to a basic engine after book moves
   - Can surprise opponents unfamiliar with rare lines
 
+## 26. Lawyer Engine
+- **Strategy**: Tries to maximize its own legal options!
+- **Characteristics**:
+  - Prioritizes moves that are legally complex
+  - Aims to create situations with many legal options
+  - Great for learning the intricacies of chess rules
+  - Can lead to unexpected tactical opportunities
+
+## 27. Criminal Engine
+- **Strategy**: Tries to minimize its own legal options!
+- **Characteristics**:
+  - Prioritizes moves that are legally simple
+  - Aims to create situations with few legal options
+  - Great for learning the consequences of limited choices
+  - Can lead to unexpected tactical opportunities
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility

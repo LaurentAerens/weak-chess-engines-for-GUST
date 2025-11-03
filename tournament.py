@@ -35,6 +35,7 @@ from src.engines.mover_engine import MoverEngine
 from src.engines.opening_book_engine import OpeningBookEngine
 from src.engines.rare_opening_book_engine import RareOpeningBookEngine
 from src.engines.lawyer_engine import LawyerEngine
+from src.engines.criminal_engine import CriminalEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -62,7 +63,8 @@ ENGINES = [
     ("Mover", MoverEngine),
     ("Opening Book", OpeningBookEngine),
     ("Rare Opening Book", RareOpeningBookEngine),
-    ("Lawyer", LawyerEngine)
+    ("Lawyer", LawyerEngine),
+    ("Criminal", CriminalEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})
