@@ -213,3 +213,6 @@ test_games/
 tournament_results.csv
 pairwise_results.csv
 scripts/pgns/opening_book.db
+# Ignore engine book outputs (do not commit large DB or JSON)
+src/engines/book/opening_book.db
+src/engines/book/opening_book.json.gz
