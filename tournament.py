@@ -70,23 +70,9 @@ PAIRWISE = {}
 
 import csv
 import argparse
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
-parser = argparse.ArgumentParser(description='Run round-robin tournament between weak engines')
-parser.add_argument('--rounds', '-r', type=int, default=1, help='Number of full round-robin rounds to run (default: 1)')
-parser.add_argument('--self-play', type=str, default='false', help='Enable engines to play against themselves (true/false, default: false)')
-args = parser.parse_args()
-ROUNDS = max(1, args.rounds)
-SELF_PLAY = args.self_play.lower() == 'true'
-
-print(f"Starting round-robin tournament... Rounds: {ROUNDS}, Self-play: {SELF_PLAY}")
-
-# Store all games for PGN export
-all_games = []
-
-
-# Prepare all matchups
 def game_task(white_name, white_class, black_name, black_class):
     board = chess.Board()
     game = chess.pgn.Game()
@@ -130,11 +116,11 @@ def game_task(white_name, white_class, black_name, black_class):
             result_type = "black_win"
             game.headers["Result"] = "0-1"
         print(f"Result: {white_name} (White) vs {black_name} (Black): {game.headers['Result']}")
-        return (white_name, black_name, result_type, game)
+        return (white_name, black_name, result_type, str(game))
     except Exception as e:
         print(f"Error running engines: {e}")
         game.headers["Result"] = "1/2-1/2"
-        return (white_name, black_name, "draw", game)
+        return (white_name, black_name, "draw", str(game))
 
 tasks = []
 for i, (name1, class1) in enumerate(ENGINES):
@@ -147,92 +133,110 @@ for i, (name1, class1) in enumerate(ENGINES):
             tasks.append((white_name, white_class, black_name, black_class))
 
 # Duplicate tasks for the requested number of rounds
-all_task_args = [args for _ in range(ROUNDS) for args in tasks]
-print(f"Starting round-robin tournament with {len(all_task_args)} games ({ROUNDS} rounds, {len(tasks)} games per round)...")
+def main():
+    parser = argparse.ArgumentParser(description='Run round-robin tournament between weak engines')
+    parser.add_argument('--rounds', '-r', type=int, default=1, help='Number of full round-robin rounds to run (default: 1)')
+    parser.add_argument('--self-play', type=str, default='false', help='Enable engines to play against themselves (true/false, default: false)')
+    parser.add_argument('--workers', '-w', type=int, default=os.cpu_count() or 1, help='Number of worker processes to use (default: all CPUs)')
+    args = parser.parse_args()
+    ROUNDS = max(1, args.rounds)
+    SELF_PLAY = args.self_play.lower() == 'true'
+    WORKERS = max(1, args.workers)
 
-# Run games in parallel (max out system resources)
-all_games = []
-with ThreadPoolExecutor() as executor:
-    futures = [executor.submit(game_task, *a) for a in all_task_args]
-    for future in as_completed(futures):
-        white_name, black_name, result_type, game = future.result()
-        all_games.append(game)
+    print(f"Starting round-robin tournament... Rounds: {ROUNDS}, Self-play: {SELF_PLAY}, Workers: {WORKERS}")
+
+    # Store all games for PGN export
+    all_games = []
+
+    # Prepare task list for all rounds
+    all_task_args = [args for _ in range(ROUNDS) for args in tasks]
+    print(f"Starting round-robin tournament with {len(all_task_args)} games ({ROUNDS} rounds, {len(tasks)} games per round)...")
+
+    # Run games in parallel using processes
+    with ProcessPoolExecutor(max_workers=WORKERS) as executor:
+        futures = [executor.submit(game_task, *a) for a in all_task_args]
+        for future in as_completed(futures):
+            white_name, black_name, result_type, game_pgn = future.result()
+            all_games.append(game_pgn)
         # Update aggregate stats
-        if result_type == "white_win":
-            RESULTS[white_name]["win"] += 1
-            RESULTS[black_name]["loss"] += 1
-            score = 1
-        elif result_type == "black_win":
-            RESULTS[black_name]["win"] += 1
-            RESULTS[white_name]["loss"] += 1
-            score = -1
-        else:
-            RESULTS[white_name]["draw"] += 1
-            RESULTS[black_name]["draw"] += 1
-            score = 0
+            if result_type == "white_win":
+                RESULTS[white_name]["win"] += 1
+                RESULTS[black_name]["loss"] += 1
+                score = 1
+            elif result_type == "black_win":
+                RESULTS[black_name]["win"] += 1
+                RESULTS[white_name]["loss"] += 1
+                score = -1
+            else:
+                RESULTS[white_name]["draw"] += 1
+                RESULTS[black_name]["draw"] += 1
+                score = 0
 
         # For pairwise matrix, if multiple rounds, accumulate by summing scores
         key = (white_name, black_name)
         PAIRWISE[key] = PAIRWISE.get(key, 0) + score
 
 
+    print("\nTournament complete!\n")
+    print("Engine Rankings (by points):")
 
-print("\nTournament complete!\n")
-print("Engine Rankings (by points):")
+    # Calculate points: win=1, draw=0.5, loss=0
+    engine_points = {}
+    for name, stats in RESULTS.items():
+        points = stats["win"] * 1 + stats["draw"] * 0.5
+        engine_points[name] = points
 
-# Calculate points: win=1, draw=0.5, loss=0
-engine_points = {}
-for name, stats in RESULTS.items():
-    points = stats["win"] * 1 + stats["draw"] * 0.5
-    engine_points[name] = points
-
-ranking = sorted(RESULTS.items(), key=lambda x: (-engine_points[x[0]], -x[1]["win"], x[1]["loss"]))
-for name, stats in ranking:
-    points = engine_points[name]
-    print(f"{name:20} | Points: {points:5.1f} | Wins: {stats['win']:3} | Losses: {stats['loss']:3} | Draws: {stats['draw']:3}")
-
-# Export results table as CSV (with points)
-with open("tournament_results.csv", "w", newline="") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["Engine", "Points", "Wins", "Losses", "Draws"])
+    ranking = sorted(RESULTS.items(), key=lambda x: (-engine_points[x[0]], -x[1]["win"], x[1]["loss"]))
     for name, stats in ranking:
         points = engine_points[name]
-        writer.writerow([name, f"{points:.1f}", stats["win"], stats["loss"], stats["draw"]])
-print("Results exported to tournament_results.csv")
+        print(f"{name:20} | Points: {points:5.1f} | Wins: {stats['win']:3} | Losses: {stats['loss']:3} | Draws: {stats['draw']:3}")
 
-# Export all games as a single PGN file
-with open("tournament_games.pgn", "w") as pgnfile:
-    for game in all_games:
-        print(game, file=pgnfile, end="\n\n")
-print("All games exported to tournament_games.pgn")
+    # Export results table as CSV (with points)
+    with open("tournament_results.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Engine", "Points", "Wins", "Losses", "Draws"])
+        for name, stats in ranking:
+            points = engine_points[name]
+            writer.writerow([name, f"{points:.1f}", stats["win"], stats["loss"], stats["draw"]])
+    print("Results exported to tournament_results.csv")
 
-# Print pairwise results matrix (rows = White, columns = Black)
-engine_names = [name for name, _ in ENGINES]
+    # Export all games as a single PGN file
+    with open("tournament_games.pgn", "w") as pgnfile:
+        for game_pgn in all_games:
+            pgnfile.write(game_pgn + "\n\n")
+    print("All games exported to tournament_games.pgn")
 
-print('\nPairwise Results (rows = White, columns = Black):')
-header = ['Engine'] + engine_names
-print(' | '.join(header))
-print(' | '.join(['---'] * len(header)))
-for white in engine_names:
-    row = [white]
-    for black in engine_names:
-        if white == black:
-            row.append('')
-        else:
-            val = PAIRWISE.get((white, black), 0)
-            row.append(str(val))
-    print(' | '.join(row))
+    # Print pairwise results matrix (rows = White, columns = Black)
+    engine_names = [name for name, _ in ENGINES]
 
-# Export pairwise matrix to CSV
-with open('pairwise_results.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow([''] + engine_names)
+    print('\nPairwise Results (rows = White, columns = Black):')
+    header = ['Engine'] + engine_names
+    print(' | '.join(header))
+    print(' | '.join(['---'] * len(header)))
     for white in engine_names:
         row = [white]
         for black in engine_names:
             if white == black:
                 row.append('')
             else:
-                row.append(str(PAIRWISE.get((white, black), 0)))
-        writer.writerow(row)
-print('Pairwise results exported to pairwise_results.csv')
+                val = PAIRWISE.get((white, black), 0)
+                row.append(str(val))
+        print(' | '.join(row))
+
+    # Export pairwise matrix to CSV
+    with open('pairwise_results.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([''] + engine_names)
+        for white in engine_names:
+            row = [white]
+            for black in engine_names:
+                if white == black:
+                    row.append('')
+                else:
+                    row.append(str(PAIRWISE.get((white, black), 0)))
+            writer.writerow(row)
+    print('Pairwise results exported to pairwise_results.csv')
+
+
+if __name__ == "__main__":
+    main()
