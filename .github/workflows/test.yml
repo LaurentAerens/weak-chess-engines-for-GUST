@@ -55,6 +55,7 @@ jobs:
         from engines.mover_engine import MoverEngine
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
+        from engines.lawyer_engine import LawyerEngine
         from base_engine import BaseUCIEngine
         print('All engines imported successfully!')"
 
@@ -86,8 +87,36 @@ jobs:
         from engines.mover_engine import MoverEngine
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
+        from engines.lawyer_engine import LawyerEngine
 
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine(), SinglePlayerEngine(), StranglerEngine(), MoverEngine(), OpeningBookEngine(), RareOpeningBookEngine()]
+        engines = [
+          RandomEngine(),
+          AlphabeticalEngine(),
+          ReverseAlphabeticalEngine(),
+          PiEngine(),
+          EulerEngine(),
+          SuicideKingEngine(),
+          BlunderEngine(),
+          GreedyCaptureEngine(),
+          ShuffleEngine(),
+          AntiPositionalEngine(),
+          ColorSquareEngine(),
+          OppositeColorSquareEngine(),
+          SwarmEngine(),
+          HuddleEngine(),
+          RunawayEngine(),
+          MirrorYEngine(),
+          MirrorXEngine(),
+          ReverseStartEngine(),
+          CCCPEngine(),
+          PassafistEngine(),
+          SinglePlayerEngine(),
+          StranglerEngine(),
+          MoverEngine(),
+          OpeningBookEngine(),
+          RareOpeningBookEngine(),
+          LawyerEngine(),
+        ]
         for engine in engines:
           print(f'Created {engine.name} by {engine.author}')
           print('All engines created successfully!')"
@@ -120,8 +149,36 @@ jobs:
         from engines.mover_engine import MoverEngine
         from engines.opening_book_engine import OpeningBookEngine
         from engines.rare_opening_book_engine import RareOpeningBookEngine
+        from engines.lawyer_engine import LawyerEngine
 
-        engines = [RandomEngine(), AlphabeticalEngine(), ReverseAlphabeticalEngine(), PiEngine(), EulerEngine(), SuicideKingEngine(), BlunderEngine(), GreedyCaptureEngine(), ShuffleEngine(), AntiPositionalEngine(), ColorSquareEngine(), OppositeColorSquareEngine(), SwarmEngine(), HuddleEngine(), RunawayEngine(), MirrorYEngine(), MirrorXEngine(), ReverseStartEngine(), CCCPEngine(), PassafistEngine(), SinglePlayerEngine(), StranglerEngine(), MoverEngine(), OpeningBookEngine(), RareOpeningBookEngine()]
+        engines = [
+          RandomEngine(),
+          AlphabeticalEngine(),
+          ReverseAlphabeticalEngine(),
+          PiEngine(),
+          EulerEngine(),
+          SuicideKingEngine(),
+          BlunderEngine(),
+          GreedyCaptureEngine(),
+          ShuffleEngine(),
+          AntiPositionalEngine(),
+          ColorSquareEngine(),
+          OppositeColorSquareEngine(),
+          SwarmEngine(),
+          HuddleEngine(),
+          RunawayEngine(),
+          MirrorYEngine(),
+          MirrorXEngine(),
+          ReverseStartEngine(),
+          CCCPEngine(),
+          PassafistEngine(),
+          SinglePlayerEngine(),
+          StranglerEngine(),
+          MoverEngine(),
+          OpeningBookEngine(),
+          RareOpeningBookEngine(),
+          LawyerEngine(),
+        ]
         for engine in engines:
           engine.board = chess.Board()
           move = engine.get_best_move(0.1)

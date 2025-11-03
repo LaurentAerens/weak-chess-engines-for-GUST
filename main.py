@@ -43,6 +43,7 @@ try:
     from engines.mover_engine import MoverEngine
     from engines.opening_book_engine import OpeningBookEngine
     from engines.rare_opening_book_engine import RareOpeningBookEngine
+    from engines.lawyer_engine import LawyerEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -205,31 +206,32 @@ class EngineSelector(tk.Frame):
         self.on_engine_change = on_engine_change
         
         self.engines = {
-            "Huddle Engine (⭐⭐⭐⭐⭐)": HuddleEngine,
-            "Random Engine (⭐⭐⭐⭐⭐)": RandomEngine,
-            "Alphabetical Engine (⭐⭐⭐⭐)": AlphabeticalEngine,
-            "Reverse Alphabetical (⭐⭐⭐⭐)": ReverseAlphabeticalEngine,
-            "Pi Engine (⭐⭐⭐⭐)": PiEngine,
-            "Euler Engine (⭐⭐⭐⭐)": EulerEngine,
-            "Suicide King (⭐⭐⭐⭐)": SuicideKingEngine,
-            "Blunder Engine (⭐⭐⭐⭐)": BlunderEngine,
-            "Color Square (⭐⭐⭐⭐)": ColorSquareEngine,
-            "Opposite Color (⭐⭐⭐⭐)": OppositeColorSquareEngine,
-            "Greedy Capture (⭐⭐⭐)": GreedyCaptureEngine,
-            "Shuffle Engine (⭐⭐⭐)": ShuffleEngine,
-            "Runaway Engine (⭐⭐⭐)": RunawayEngine,
-            "Mirror Y Engine (⭐⭐⭐)": MirrorYEngine,
-            "Mirror X Engine (⭐⭐⭐)": MirrorXEngine,
-            "Anti-Positional (⭐⭐)": AntiPositionalEngine,
-            "Swarm Engine (⭐⭐)": SwarmEngine,
-            "Reverse Start Engine (⭐⭐)": ReverseStartEngine,
-            "CCCP Engine (⭐)": CCCPEngine,
-            "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine,
-            "Single Player Engine (⭐)": SinglePlayerEngine,
-            "Strangler Engine (⭐)": StranglerEngine,
-            "Mover Engine (⭐)": MoverEngine,
-            "Opening Book Engine (⭐⭐⭐⭐)": OpeningBookEngine,
-            "Rare Opening Book Engine (⭐⭐⭐⭐)": RareOpeningBookEngine
+            "Huddle Engine ": HuddleEngine,
+            "Random Engine ": RandomEngine,
+            "Alphabetical Engine ": AlphabeticalEngine,
+            "Reverse Alphabetical ": ReverseAlphabeticalEngine,
+            "Pi Engine ": PiEngine,
+            "Euler Engine ": EulerEngine,
+            "Suicide King ": SuicideKingEngine,
+            "Blunder Engine ": BlunderEngine,
+            "Color Square ": ColorSquareEngine,
+            "Opposite Color ": OppositeColorSquareEngine,
+            "Greedy Capture ": GreedyCaptureEngine,
+            "Shuffle Engine ": ShuffleEngine,
+            "Runaway Engine ": RunawayEngine,
+            "Mirror Y Engine ": MirrorYEngine,
+            "Mirror X Engine ": MirrorXEngine,
+            "Anti-Positional ": AntiPositionalEngine,
+            "Swarm Engine ": SwarmEngine,
+            "Reverse Start Engine ": ReverseStartEngine,
+            "CCCP Engine ": CCCPEngine,
+            "Passafist Engine": PassafistEngine,
+            "Single Player Engine ": SinglePlayerEngine,
+            "Strangler Engine ": StranglerEngine,
+            "Mover Engine ": MoverEngine,
+            "Opening Book Engine ": OpeningBookEngine,
+            "Rare Opening Book Engine ": RareOpeningBookEngine,
+            "Lawyer Engine ": LawyerEngine
         }
         
         self.create_widgets()
@@ -277,7 +279,7 @@ class EngineSelector(tk.Frame):
         selected = self.engine_var.get()
         
         info_texts = {
-            "Huddle Engine (⭐⭐⭐⭐⭐)": 
+            "Huddle Engine ": 
                 "The ultimate defensive engine!\n\n"
                 "• Prioritizes king safety above all\n"
                 "• Forms a protective barrier with pieces\n"
@@ -285,7 +287,7 @@ class EngineSelector(tk.Frame):
                 "• Great for learning defensive strategies\n"
                 "• Can be frustrating to play against",
 
-            "Random Engine (⭐⭐⭐⭐⭐)": 
+            "Random Engine ": 
                 "The weakest possible engine!\n\n"
                 "• Plays completely random legal moves\n"
                 "• No planning or evaluation\n"
@@ -293,39 +295,39 @@ class EngineSelector(tk.Frame):
                 "• Great for absolute beginners\n"
                 "• Will hang pieces immediately",
             
-            "Alphabetical Engine (⭐⭐⭐⭐)": 
+            "Alphabetical Engine": 
                 "The most predictable engine!\n\n"
                 "• Always picks first move alphabetically\n"
                 "• Completely predictable patterns\n"
                 "• Sorts moves by algebraic notation\n"
                 "• Great for learning move notation\n"
                 "• Easy to exploit once you know the pattern",
-            
-            "Reverse Alphabetical (⭐⭐⭐⭐)": 
+
+            "Reverse Alphabetical": 
                 "Predictably backwards!\n\n"
                 "• Always picks last move alphabetically\n"
                 "• Prefers 'z' moves over 'a' moves\n"
                 "• Opposite pattern to Alphabetical Engine\n"
                 "• Still completely predictable\n"
                 "• Great for testing pattern recognition",
-            
-            "Pi Engine (⭐⭐⭐⭐)": 
+
+            "Pi Engine": 
                 "Mathematical constant player!\n\n"
                 "• Uses Pi (3.14159...) to pick moves\n"
                 "• Maps Pi's fractional part to move index\n"
                 "• Semi-predictable but mathematically elegant\n"
                 "• Picks ~14% through the move list\n"
                 "• Educational and quirky!",
-            
-            "Euler Engine (⭐⭐⭐⭐)": 
+
+            "Euler Engine": 
                 "Euler's number strategist!\n\n"
                 "• Uses e (2.71828...) to pick moves\n"
                 "• Maps e's fractional part to move index\n"
                 "• Different pattern from Pi Engine\n"
                 "• Picks ~72% through the move list\n"
                 "• For math enthusiasts!",
-            
-            "Suicide King (⭐⭐⭐⭐)": 
+
+            "Suicide King":
                 "The kamikaze monarch!\n\n"
                 "• Tries to move king toward enemy king\n"
                 "• Recklessly advances into danger\n"
@@ -333,7 +335,7 @@ class EngineSelector(tk.Frame):
                 "• Great for practicing king attacks\n"
                 "• Hilarious and aggressive",
             
-            "Blunder Engine (⭐⭐⭐⭐)": 
+            "Blunder Engine":
                 "Actively tries to play badly!\n\n"
                 "• Evaluates positions to find worst moves\n"
                 "• Deliberately hangs pieces\n"
@@ -341,7 +343,7 @@ class EngineSelector(tk.Frame):
                 "• Makes your chess look brilliant\n"
                 "• Educational for learning tactics",
 
-            "Color Square (⭐⭐⭐⭐)": 
+            "Color Square": 
                 "The color square strategist!\n\n"
                 "• Prioritizes control of color squares\n"
                 "• Develops pieces to dominate key squares\n"
@@ -349,14 +351,14 @@ class EngineSelector(tk.Frame):
                 "• Great for learning color complex concepts\n"
                 "• Subtle and sophisticated",
 
-            "Opposite Color Square (⭐⭐⭐⭐)": 
+            "Opposite Color Square": 
                 "The opposite color square strategist!\n\n"
                 "• Moves pieces onto squares of the opposite color\n"  
                 "• Ignores material for positional play\n"
                 "• Great for learning color complex concepts\n"
                 "• Subtle and sophisticated",
 
-            "Greedy Capture (⭐⭐⭐)": 
+            "Greedy Capture ": 
                 "Material obsessed engine!\n\n"
                 "• Always captures when possible\n"
                 "• Ignores positional considerations\n"
@@ -364,7 +366,7 @@ class EngineSelector(tk.Frame):
                 "• Weak to tactical traps\n"
                 "• Good for practicing tactics",
             
-            "Shuffle Engine (⭐⭐⭐)": 
+            "Shuffle Engine ": 
                 "The time waster!\n\n"
                 "• Moves pieces back and forth\n"
                 "• No sense of progress\n"
@@ -372,7 +374,7 @@ class EngineSelector(tk.Frame):
                 "• Creates repetitive patterns\n"
                 "• Tests your patience",
 
-            "Runaway Engine (⭐⭐⭐)":
+            "Runaway Engine ":
                 "The fleeing pieces!\n\n"
                 "• King runs away from any enemy piece\n"
                 "• Prioritizes escape over all else\n"
@@ -380,7 +382,7 @@ class EngineSelector(tk.Frame):
                 "• Great for learning evasion tactics\n"
                 "• Can be unpredictable and frustrating",
 
-            "Anti-Positional (⭐⭐)": 
+            "Anti-Positional": 
                 "Violates all chess principles!\n\n"
                 "• Avoids central control\n"
                 "• Develops pieces poorly\n"
@@ -388,7 +390,7 @@ class EngineSelector(tk.Frame):
                 "• Understands tactics but ignores strategy\n"
                 "• Strongest of the weak engines",
 
-            "Swarm Engine (⭐⭐)": 
+            "Swarm Engine": 
                 "• Pieces move as far away from their own king as possible!\n\n"
                 "• Prioritizes distance from own king\n"
                 "• Ignores all other considerations\n"
@@ -396,25 +398,25 @@ class EngineSelector(tk.Frame):
                 "• Can result in aggressive offensive play\n"
                 "• Unpredictable and difficult to counter\n",
 
-            "Mirror Y Engine (⭐⭐⭐)":
+            "Mirror Y Engine ":
                 "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the Y axis.\n\n"
                 "• Attempts to mirror the board state vertically\n"
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
                 "• Fun for testing symmetry and creative play\n",
 
-            "Mirror X Engine (⭐⭐⭐)":
+            "Mirror X Engine ":
                 "Tries to reach a position that is as close as possible to the mirror of the opponent's position across the X axis.\n\n"
                 "• Attempts to mirror the board state across files (a<->h)\n"
                 "• Picks randomly among equally mirrored moves\n"
                 "• If no move helps, plays a random legal move\n"
                 "• Fun for testing symmetry and creative play\n",
 
-            "Reverse Start Engine (⭐⭐)":
+            "Reverse Start Engine":
                 "tries to get to the enemy's starting position as quickly as possible!\n\n"
                 "• Prioritizes moves that lead to the opponent's initial setup\n",
 
-            "CCCP Engine (⭐)":
+            "CCCP Engine":
                 "The Soviet Strategy!\n\n"
                 "• 1) Checkmate if possible\n"
                 "• 2) Give check if possible\n"
@@ -422,7 +424,7 @@ class EngineSelector(tk.Frame):
                 "• 4) Push pieces closer to enemy backline\n"
                 "• Picks randomly among equally good moves\n",  
 
-            "Passafist Engine (⭐⭐⭐⭐⭐)":
+            "Passafist Engine":
                 "The ultimate passive engine!\n\n"
                 "• Avoids captures and checks\n"
                 "• Prioritizes piece safety above all\n"
@@ -430,7 +432,7 @@ class EngineSelector(tk.Frame):
                 "• Great for learning defensive play\n"
                 "• Can be surprisingly resilient",
 
-            "Single Player Engine (⭐)":
+            "Single Player Engine":
                 "A basic engine focused on simple material evaluation!\n\n"
                 "• Evaluates moves based on material gain\n"
                 "• Looks ahead a few moves to assess outcomes\n"
@@ -438,20 +440,20 @@ class EngineSelector(tk.Frame):
                 "• Limited understanding of complex tactics\n"
                 "• Thinks of every move as a it's to play doesn't think the opponent can make a move\n",
 
-            "Strangler Engine (⭐)":
+            "Strangler Engine":
                 "Gradually restricts opponent's mobility!\n\n"
                 "• Prioritizes moves that limit opponent's options\n"
                 "• Aims to control key squares and files\n"
                 "• Can lead to slow but steady advantages\n"
                 "• Effective against aggressive opponents\n",
 
-            "Mover Engine (⭐)":
+            "Mover Engine":
                 "• Moves the least recently moved piece\n"
                 "• Prioritizes squares that have been visited less\n"
                 "• Can create unexpected threats\n"
                 "• Encourages exploration of the board\n",
 
-            "Opening Book Engine (⭐⭐⭐⭐)":
+            "Opening Book Engine":
                 "Plays from a predefined opening book!\n\n"
                 "• Uses established opening theory\n"
                 "• Aims for solid opening positions\n"
@@ -460,13 +462,20 @@ class EngineSelector(tk.Frame):
                 "• Can be limited in its adaptability\n"
                 "• May not handle rare openings well\n",
 
-            "Rare Opening Book Engine (⭐⭐⭐⭐)":
+            "Rare Opening Book Engine":
                 "Plays from a predefined rare opening book!\n\n"
                 "• Uses less common opening theory\n"
                 "• Aims for unusual but sound positions\n"
                 "• Great for exploring rare openings\n"
                 "• Switches to a basic engine after book moves\n"
-                "• Can surprise opponents unfamiliar with rare lines\n"
+                "• Can surprise opponents unfamiliar with rare lines\n",
+
+            "Lawyer Engine":
+                "The legal eagle!\n\n"
+                "• Prioritizes moves that are legally complex\n"
+                "• Aims to create situations with many legal options\n"
+                "• Great for learning the intricacies of chess rules\n"
+                "• Can lead to unexpected tactical opportunities\n"
                 
 
         }

@@ -39,6 +39,7 @@ from engines.strangler_engine import StranglerEngine
 from engines.mover_engine import MoverEngine
 from engines.opening_book_engine import OpeningBookEngine
 from engines.rare_opening_book_engine import RareOpeningBookEngine
+from engines.lawyer_engine import LawyerEngine
 
 ENGINES = [
     RandomEngine(),
@@ -65,7 +66,8 @@ ENGINES = [
     StranglerEngine(),
     MoverEngine(),
     OpeningBookEngine(),
-    RareOpeningBookEngine()
+    RareOpeningBookEngine(),
+    LawyerEngine()
 ]
 
 
