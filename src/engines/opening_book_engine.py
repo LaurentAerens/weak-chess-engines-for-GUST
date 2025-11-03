@@ -98,29 +98,29 @@ class OpeningBookEngine(BaseUCIEngine):
 
     def get_best_move(self, think_time: float = 1.0):
         # prefer DB lookup if available to avoid loading whole book
-        fen = self.board.fen()
+        # Use the normalized FEN (first 4 fields) as the key to match the builder
+        key = ' '.join(self.board.fen().split(' ')[:4])
         move_uci = None
         if self.db:
             try:
-                # guard access with the per-instance lock to support multithreaded lookups
                 lock = self._db_lock
                 if lock is None:
-                    # defensive: create a lock if missing
                     lock = threading.RLock()
                     self._db_lock = lock
                 with lock:
                     cur = self.db.cursor()
-                    cur.execute('SELECT move FROM book WHERE fen = ?', (fen,))
+                    cur.execute('SELECT move FROM book WHERE hash = ?', (key,))
                     row = cur.fetchone()
                     if row:
                         move_uci = row[0]
                     cur.close()
             except Exception as e:
-                # non-fatal: fall back to in-memory or random
                 print(f"[OpeningBook] SQLite lookup error: {e}", file=sys.stderr)
 
         if not move_uci and self.book:
-            move_uci = self.book.get(fen)
+            # JSON book (legacy) keys are stringified integers; builder now no longer
+            # produces JSON, but keep lookup robust in case a legacy file is used.
+            move_uci = self.book.get(str(key)) or self.book.get(key)
 
         if move_uci:
             try:
