@@ -160,7 +160,7 @@ def main():
         for future in as_completed(futures):
             white_name, black_name, result_type, game_pgn = future.result()
             all_games.append(game_pgn)
-        # Update aggregate stats
+            # Update aggregate stats
             if result_type == "white_win":
                 RESULTS[white_name]["win"] += 1
                 RESULTS[black_name]["loss"] += 1
@@ -174,9 +174,9 @@ def main():
                 RESULTS[black_name]["draw"] += 1
                 score = 0
 
-        # For pairwise matrix, if multiple rounds, accumulate by summing scores
-        key = (white_name, black_name)
-        PAIRWISE[key] = PAIRWISE.get(key, 0) + score
+            # For pairwise matrix, if multiple rounds, accumulate by summing scores
+            key = (white_name, black_name)
+            PAIRWISE[key] = PAIRWISE.get(key, 0) + score
 
 
     print("\nTournament complete!\n")

@@ -107,6 +107,10 @@ jobs:
         if exist "src\engines\book\opening_book.json.gz" (
           copy "src\engines\book\opening_book.json.gz" "release\opening_book.json.gz"
         )
+        REM copy sqlite opening book into release (if present in repo)
+        if exist "src\engines\book\opening_book.db" (
+          copy "src\engines\book\opening_book.db" "release\opening_book.db"
+        )
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -143,6 +147,10 @@ jobs:
         # copy opening book into release if present
         if [ -f src/engines/book/opening_book.json.gz ]; then
           cp src/engines/book/opening_book.json.gz release/opening_book.json.gz || true
+        fi
+        # copy sqlite opening book into release if present
+        if [ -f src/engines/book/opening_book.db ]; then
+          cp src/engines/book/opening_book.db release/opening_book.db || true
         fi
 
         # Make executables... executable
@@ -190,6 +198,9 @@ jobs:
         # Also copy the opening book from the repository into the final release (if present)
         if [ -f src/engines/book/opening_book.json.gz ]; then
           cp src/engines/book/opening_book.json.gz final_release/ || true
+        fi
+        if [ -f src/engines/book/opening_book.db ]; then
+          cp src/engines/book/opening_book.db final_release/ || true
         fi
         # List files for debugging
         ls -la final_release/
