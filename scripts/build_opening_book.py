@@ -101,14 +101,11 @@ def build_book_sqlite(pgn_paths, outpath, keep_singletons: bool = False):
     cur.execute("DROP TABLE IF EXISTS book;")
     cur.execute("CREATE TABLE book(hash TEXT PRIMARY KEY, move TEXT);")
     if keep_singletons:
-        # Keep every position (including those seen only once)
         cur.execute(
             "INSERT OR REPLACE INTO book(hash, move)\n"
             "SELECT hash, move FROM (SELECT hash, move, ROW_NUMBER() OVER (PARTITION BY hash ORDER BY count DESC) AS rn FROM counts) WHERE rn = 1;"
         )
     else:
-        # Only keep positions seen more than once: compute totals per hash and join to pick the
-        # most-played move for hashes with total_count > 1. This prunes singleton positions.
         cur.execute(
             "INSERT OR REPLACE INTO book(hash, move)\n"
             "SELECT c.hash, c.move FROM (SELECT hash, move, ROW_NUMBER() OVER (PARTITION BY hash ORDER BY count DESC) AS rn FROM counts) c\n"
@@ -116,6 +113,34 @@ def build_book_sqlite(pgn_paths, outpath, keep_singletons: bool = False):
             "WHERE c.rn = 1;"
         )
     conn.commit()
+
+    # Fun feature: dump least played move per position if requested
+    if getattr(build_book_sqlite, "dump_rare_openings", False):
+        print("[build_book_sqlite] Aggregating least-played move per position into table 'rare_book'...", flush=True)
+        cur.execute("DROP TABLE IF EXISTS rare_book;")
+        cur.execute("CREATE TABLE rare_book(hash TEXT PRIMARY KEY, move TEXT);")
+        # Only keep positions seen more than once (prune singletons)
+        cur.execute(
+            "INSERT OR REPLACE INTO rare_book(hash, move)\n"
+            "SELECT c.hash, c.move FROM (SELECT hash, move, ROW_NUMBER() OVER (PARTITION BY hash ORDER BY count ASC) AS rn FROM counts) c\n"
+            "JOIN (SELECT hash, SUM(count) AS total_count FROM counts GROUP BY hash HAVING SUM(count) > 1) t ON c.hash = t.hash\n"
+            "WHERE c.rn = 1;"
+        )
+        conn.commit()
+        # Dump rare_book to a separate DB file
+        rare_db_path = outpath.replace('.db', '_rare.db')
+        print(f"[build_book_sqlite] Dumping rare openings to {rare_db_path}", flush=True)
+        # Copy schema and rare_book table to new DB
+        rare_conn = sqlite3.connect(rare_db_path)
+        rare_cur = rare_conn.cursor()
+        rare_cur.execute("DROP TABLE IF EXISTS rare_book;")
+        rare_cur.execute("CREATE TABLE rare_book(hash TEXT PRIMARY KEY, move TEXT);")
+        for row in cur.execute("SELECT hash, move FROM rare_book;"):
+            rare_cur.execute("INSERT INTO rare_book(hash, move) VALUES (?, ?);", row)
+        rare_conn.commit()
+        rare_cur.close()
+        rare_conn.close()
+        print(f"[build_book_sqlite] Rare opening book created at {rare_db_path}", flush=True)
 
     print("[build_book_sqlite] Dropping temporary tables to shrink DB...", flush=True)
     cur.execute("DROP TABLE IF EXISTS counts;")
@@ -139,6 +164,7 @@ def main():
     parser.add_argument('outpath', nargs='?', help='Output path (.db). If omitted defaults to src/engines/book/opening_book.db')
     parser.add_argument('pgns', nargs='*', help='List of PGN files to read (defaults to scripts/pgns/*.pgn)')
     parser.add_argument('--keep-singletons', action='store_true', help='Do not prune positions that only occur once (default: prune)')
+    parser.add_argument('--rare-openings', action='store_true', help='Dump least played move per position to a rare-opening-book DB')
     args = parser.parse_args()
 
     # Default input folder: scripts/pgns/*.pgn
@@ -158,6 +184,8 @@ def main():
         pgns = sorted(glob.glob(os.path.join(default_pgn_dir, '*.pgn')))
 
     print(f"Building book from {len(pgns)} PGN files...", flush=True)
+    # Set feature flag for rare openings
+    build_book_sqlite.dump_rare_openings = args.rare_openings
     build_book_sqlite(pgns, outpath, keep_singletons=args.keep_singletons)
     print(f"Wrote sqlite book to {outpath}", flush=True)
 

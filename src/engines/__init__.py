@@ -1,6 +1,3 @@
-from .mover_engine import MoverEngine
-from .strangler_engine import StranglerEngine
-from .opening_book_engine import OpeningBookEngine
 """
 Collection of weak chess engines for testing and analysis.
 """
@@ -28,6 +25,7 @@ from .single_player_engine import SinglePlayerEngine
 from .strangler_engine import StranglerEngine
 from .mover_engine import MoverEngine
 from .opening_book_engine import OpeningBookEngine
+from .rare_opening_book_engine import RareOpeningBookEngine
 
 __all__ = [
     'RandomEngine',
@@ -53,5 +51,6 @@ __all__ = [
     'SinglePlayerEngine',
     'StranglerEngine',
     'MoverEngine',
-    'OpeningBookEngine'
+    'OpeningBookEngine',
+    'RareOpeningBookEngine'
 ]

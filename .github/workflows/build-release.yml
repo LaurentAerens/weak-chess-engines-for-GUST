@@ -71,6 +71,7 @@ jobs:
         pyinstaller --onefile --name strangler_engine_${{ matrix.os }} scripts/strangler_engine.py
         pyinstaller --onefile --name mover_engine_${{ matrix.os }} scripts/mover_engine.py
         pyinstaller --onefile --name opening_book_engine_${{ matrix.os }} scripts/opening_book_engine.py
+        pyinstaller --onefile --name rare_opening_book_engine_${{ matrix.os }} scripts/rare_opening_book_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -103,12 +104,13 @@ jobs:
         copy "dist\strangler_engine_${{ matrix.os }}.exe" "release\strangler_engine_windows.exe"
         copy "dist\mover_engine_${{ matrix.os }}.exe" "release\mover_engine_windows.exe"
         copy "dist\opening_book_engine_${{ matrix.os }}.exe" "release\opening_book_engine_windows.exe"
+        copy "dist\rare_opening_book_engine_${{ matrix.os }}.exe" "release\rare_opening_book_engine_windows.exe"
         # PowerShell syntax for file existence and copying
-        if (Test-Path "src\engines\book\opening_book.json.gz") {
-          Copy-Item "src\engines\book\opening_book.json.gz" "release\opening_book.json.gz"
-        }
         if (Test-Path "src\engines\book\opening_book.db") {
           Copy-Item "src\engines\book\opening_book.db" "release\opening_book.db"
+        }
+        if (Test-Path "src\engines\book\opening_book_rare.db") {
+          Copy-Item "src\engines\book\opening_book_rare.db" "release\opening_book_rare.db"
         }
 
     - name: Prepare artifacts (Linux)
@@ -142,14 +144,14 @@ jobs:
         cp "dist/strangler_engine_${{ matrix.os }}" "release/strangler_engine_linux"
         cp "dist/mover_engine_${{ matrix.os }}" "release/mover_engine_linux"
         cp "dist/opening_book_engine_${{ matrix.os }}" "release/opening_book_engine_linux"
+        cp "dist/rare_opening_book_engine_${{ matrix.os }}" "release/rare_opening_book_engine_linux"
 
-        # copy opening book into release if present
-        if [ -f src/engines/book/opening_book.json.gz ]; then
-          cp src/engines/book/opening_book.json.gz release/opening_book.json.gz || true
-        fi
         # copy sqlite opening book into release if present
         if [ -f src/engines/book/opening_book.db ]; then
           cp src/engines/book/opening_book.db release/opening_book.db || true
+        fi
+        if [ -f src/engines/book/opening_book_rare.db ]; then
+          cp src/engines/book/opening_book_rare.db release/opening_book_rare.db || true
         fi
 
         # Make executables... executable
@@ -195,11 +197,11 @@ jobs:
           cp "$dir"/* final_release/ 2>/dev/null || true
         done
         # Also copy the opening book from the repository into the final release (if present)
-        if [ -f src/engines/book/opening_book.json.gz ]; then
-          cp src/engines/book/opening_book.json.gz final_release/ || true
-        fi
         if [ -f src/engines/book/opening_book.db ]; then
           cp src/engines/book/opening_book.db final_release/ || true
+        fi
+        if [ -f src/engines/book/opening_book_rare.db ]; then
+          cp src/engines/book/opening_book_rare.db final_release/ || true
         fi
         # List files for debugging
         ls -la final_release/
@@ -321,6 +323,7 @@ jobs:
           - **Strangler Engine**: An engine that focuses minimizing its opponents moves in the next turn.
           - **Mover Engine**: An engine that focuses on moving pieces towards the center of the board.
           - **Opening Book Engine**: An engine that plays moves from a predefined opening book.
+          - **Rare Opening Book Engine**: An engine that plays moves from a rare and uncommon opening book.
 
           ## Tournament Results
 

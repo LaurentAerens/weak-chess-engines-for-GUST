@@ -1,7 +1,5 @@
 import chess
 import random
-import gzip
-import json
 import sys
 import os
 import sqlite3
@@ -77,15 +75,8 @@ class OpeningBookEngine(BaseUCIEngine):
                     self.db = None
                 self.book = {}
                 return
-
-            if lower.endswith('.json.gz') or lower.endswith('.gz'):
-                with gzip.open(path, 'rt', encoding='utf-8') as gz:
-                    self.book = json.load(gz)
-                return
-
-            # plain json fallback
-            with open(path, 'r', encoding='utf-8') as f:
-                self.book = json.load(f)
+            # no other formats supported
+            raise ValueError(f"Unsupported book format: {path}")
         except Exception as e:
             print(f"[OpeningBook] Failed to load book from {path}: {e}", file=sys.stderr)
             self.book = {}

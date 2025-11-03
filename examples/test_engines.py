@@ -38,6 +38,7 @@ from engines.single_player_engine import SinglePlayerEngine
 from engines.strangler_engine import StranglerEngine
 from engines.mover_engine import MoverEngine
 from engines.opening_book_engine import OpeningBookEngine
+from engines.rare_opening_book_engine import RareOpeningBookEngine
 
 ENGINES = [
     RandomEngine(),
@@ -63,7 +64,8 @@ ENGINES = [
     SinglePlayerEngine(),
     StranglerEngine(),
     MoverEngine(),
-    OpeningBookEngine()
+    OpeningBookEngine(),
+    RareOpeningBookEngine()
 ]
 
 

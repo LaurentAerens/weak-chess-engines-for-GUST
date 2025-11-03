@@ -33,6 +33,7 @@ from src.engines.single_player_engine import SinglePlayerEngine
 from src.engines.strangler_engine import StranglerEngine
 from src.engines.mover_engine import MoverEngine
 from src.engines.opening_book_engine import OpeningBookEngine
+from src.engines.rare_opening_book_engine import RareOpeningBookEngine
 
 ENGINES = [
     ("Random", RandomEngine),
@@ -58,7 +59,8 @@ ENGINES = [
     ("Single Player", SinglePlayerEngine),
     ("Strangler", StranglerEngine),
     ("Mover", MoverEngine),
-    ("Opening Book", OpeningBookEngine)
+    ("Opening Book", OpeningBookEngine),
+    ("Rare Opening Book", RareOpeningBookEngine)
 ]
 
 RESULTS = defaultdict(lambda: {"win": 0, "loss": 0, "draw": 0})

@@ -210,6 +210,16 @@ python scripts/random_engine.py
   - Can be exploited once out of book
 - **Good for**: Learning and practicing common opening lines
 
+## 25. Rare Opening Book Engine
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Plays from a the least played opening move in every position
+- **Characteristics**: 
+  - Uses less common opening theory
+  - Aims for unusual but sound positions
+  - Great for exploring rare openings
+  - Switches to a basic engine after book moves
+  - Can surprise opponents unfamiliar with rare lines
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility

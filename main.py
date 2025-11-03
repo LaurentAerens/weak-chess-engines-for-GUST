@@ -42,6 +42,7 @@ try:
     from engines.strangler_engine import StranglerEngine
     from engines.mover_engine import MoverEngine
     from engines.opening_book_engine import OpeningBookEngine
+    from engines.rare_opening_book_engine import RareOpeningBookEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -227,7 +228,8 @@ class EngineSelector(tk.Frame):
             "Single Player Engine (⭐)": SinglePlayerEngine,
             "Strangler Engine (⭐)": StranglerEngine,
             "Mover Engine (⭐)": MoverEngine,
-            "Opening Book Engine (⭐⭐⭐⭐)": OpeningBookEngine
+            "Opening Book Engine (⭐⭐⭐⭐)": OpeningBookEngine,
+            "Rare Opening Book Engine (⭐⭐⭐⭐)": RareOpeningBookEngine
         }
         
         self.create_widgets()
@@ -456,7 +458,15 @@ class EngineSelector(tk.Frame):
                 "• Great for learning standard openings\n"
                 "• Switches to a basic engine after book moves\n"
                 "• Can be limited in its adaptability\n"
-                "• May not handle rare openings well\n"
+                "• May not handle rare openings well\n",
+
+            "Rare Opening Book Engine (⭐⭐⭐⭐)":
+                "Plays from a predefined rare opening book!\n\n"
+                "• Uses less common opening theory\n"
+                "• Aims for unusual but sound positions\n"
+                "• Great for exploring rare openings\n"
+                "• Switches to a basic engine after book moves\n"
+                "• Can surprise opponents unfamiliar with rare lines\n"
                 
 
         }
