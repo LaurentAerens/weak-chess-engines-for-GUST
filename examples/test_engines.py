@@ -41,6 +41,7 @@ from engines.opening_book_engine import OpeningBookEngine
 from engines.rare_opening_book_engine import RareOpeningBookEngine
 from engines.lawyer_engine import LawyerEngine
 from engines.criminal_engine import CriminalEngine
+from engines.paralegal_engine import ParalegalEngine
 
 ENGINES = [
     RandomEngine(),
@@ -69,7 +70,8 @@ ENGINES = [
     OpeningBookEngine(),
     RareOpeningBookEngine(),
     LawyerEngine(),
-    CriminalEngine()
+    CriminalEngine(),
+    ParalegalEngine()
 ]
 
 

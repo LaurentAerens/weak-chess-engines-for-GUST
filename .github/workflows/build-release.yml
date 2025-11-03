@@ -74,6 +74,7 @@ jobs:
         pyinstaller --onefile --name rare_opening_book_engine_${{ matrix.os }} scripts/rare_opening_book_engine.py
         pyinstaller --onefile --name lawyer_engine_${{ matrix.os }} scripts/lawyer_engine.py
         pyinstaller --onefile --name criminal_engine_${{ matrix.os }} scripts/criminal_engine.py
+        pyinstaller --onefile --name paralegal_engine_${{ matrix.os }} scripts/paralegal_engine.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -109,6 +110,7 @@ jobs:
         copy "dist\rare_opening_book_engine_${{ matrix.os }}.exe" "release\rare_opening_book_engine_windows.exe"
         copy "dist\lawyer_engine_${{ matrix.os }}.exe" "release\lawyer_engine_windows.exe"
         copy "dist\criminal_engine_${{ matrix.os }}.exe" "release\criminal_engine_windows.exe"
+        copy "dist\paralegal_engine_${{ matrix.os }}.exe" "release\paralegal_engine_windows.exe"
 
         # PowerShell syntax for file existence and copying
         if (Test-Path "src\engines\book\opening_book.db") {
@@ -152,6 +154,7 @@ jobs:
         cp "dist/rare_opening_book_engine_${{ matrix.os }}" "release/rare_opening_book_engine_linux"
         cp "dist/lawyer_engine_${{ matrix.os }}" "release/lawyer_engine_linux"
         cp "dist/criminal_engine_${{ matrix.os }}" "release/criminal_engine_linux"
+        cp "dist/paralegal_engine_${{ matrix.os }}" "release/paralegal_engine_linux"
 
         # copy sqlite opening book into release if present
         if [ -f src/engines/book/opening_book.db ]; then
@@ -333,7 +336,8 @@ jobs:
           - **Rare Opening Book Engine**: An engine that plays moves from a rare and uncommon opening book.
           - **Lawyer Engine**: Tries to maximize its legal moves.
           - **Criminal Engine**: Tries to minimize its own legal moves.
-          
+          - **Paralegal Engine**: This engine tries to maximize it's opponent's legal moves.
+
           ## Tournament Results
 
           ${{ steps.tournament_table.outputs.table }}

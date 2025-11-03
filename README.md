@@ -211,6 +211,14 @@ python scripts/random_engine.py
   - Great for learning the consequences of limited choices
   - Can lead to unexpected tactical opportunities
 
+## 28. Paralegal Engine
+- **Strategy**: Tries to create legal ambiguities!
+- **Characteristics**:
+  - Prioritizes moves that are legally complex
+  - Aims to create situations with many legal options
+  - Great for learning the intricacies of chess rules
+  - Can lead to unexpected tactical opportunities
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility

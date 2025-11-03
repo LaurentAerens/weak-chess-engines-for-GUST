@@ -28,6 +28,7 @@ from .opening_book_engine import OpeningBookEngine
 from .rare_opening_book_engine import RareOpeningBookEngine
 from .lawyer_engine import LawyerEngine
 from .criminal_engine import CriminalEngine
+from .paralegal_engine import ParalegalEngine
 
 __all__ = [
     'RandomEngine',
@@ -57,4 +58,5 @@ __all__ = [
     'RareOpeningBookEngine',
     'LawyerEngine',
     'CriminalEngine',
+    'ParalegalEngine'
 ]
