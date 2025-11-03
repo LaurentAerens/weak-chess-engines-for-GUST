@@ -201,6 +201,15 @@ python scripts/random_engine.py
 - **Characteristics**: Focuses on piece activity and central control
 - **Good for**: Practicing opening principles and piece coordination
 
+### 24. Opening Book Engine
+- **Weakness Level**: ⭐⭐⭐⭐ (Very Weak)
+- **Strategy**: Plays moves from a predefined opening book
+- **Characteristics**: 
+  - Follows standard opening theory
+  - Lacks adaptability beyond the opening phase
+  - Can be exploited once out of book
+- **Good for**: Learning and practicing common opening lines
+
 ## 🛠️ Technical Details
 
 ### UCI Compatibility

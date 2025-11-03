@@ -41,6 +41,7 @@ try:
     from engines.single_player_engine import SinglePlayerEngine
     from engines.strangler_engine import StranglerEngine
     from engines.mover_engine import MoverEngine
+    from engines.opening_book_engine import OpeningBookEngine
 
 except ImportError as e:
     print(f"Error importing engines: {e}")
@@ -225,7 +226,8 @@ class EngineSelector(tk.Frame):
             "Passafist Engine (⭐⭐⭐⭐⭐)": PassafistEngine,
             "Single Player Engine (⭐)": SinglePlayerEngine,
             "Strangler Engine (⭐)": StranglerEngine,
-            "Mover Engine (⭐)": MoverEngine
+            "Mover Engine (⭐)": MoverEngine,
+            "Opening Book Engine (⭐⭐⭐⭐)": OpeningBookEngine
         }
         
         self.create_widgets()
@@ -445,7 +447,17 @@ class EngineSelector(tk.Frame):
                 "• Moves the least recently moved piece\n"
                 "• Prioritizes squares that have been visited less\n"
                 "• Can create unexpected threats\n"
-                "• Encourages exploration of the board\n"
+                "• Encourages exploration of the board\n",
+
+            "Opening Book Engine (⭐⭐⭐⭐)":
+                "Plays from a predefined opening book!\n\n"
+                "• Uses established opening theory\n"
+                "• Aims for solid opening positions\n"
+                "• Great for learning standard openings\n"
+                "• Switches to a basic engine after book moves\n"
+                "• Can be limited in its adaptability\n"
+                "• May not handle rare openings well\n"
+                
 
         }
         

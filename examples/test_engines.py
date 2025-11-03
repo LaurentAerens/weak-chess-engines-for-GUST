@@ -37,6 +37,7 @@ from engines.passafist_engine import PassafistEngine
 from engines.single_player_engine import SinglePlayerEngine
 from engines.strangler_engine import StranglerEngine
 from engines.mover_engine import MoverEngine
+from engines.opening_book_engine import OpeningBookEngine
 
 ENGINES = [
     RandomEngine(),
@@ -61,7 +62,8 @@ ENGINES = [
     PassafistEngine(),
     SinglePlayerEngine(),
     StranglerEngine(),
-    MoverEngine()
+    MoverEngine(),
+    OpeningBookEngine()
 ]
 
 
