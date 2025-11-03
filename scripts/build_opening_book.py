@@ -117,17 +117,32 @@ def build_book_sqlite(pgn_paths, outpath):
     conn.commit()
     print(f"[build_book_sqlite] Finished reading PGNs: {games} games, {ops} moves inserted/updated.", flush=True)
 
-    # create final book table with most-played move per fen
+    # create final compact book table with most-played move per fen
     print("[build_book_sqlite] Aggregating most-played move per position into table 'book'...", flush=True)
+    # ensure book table exists (will replace if present)
     cur.execute("CREATE TABLE IF NOT EXISTS book(fen TEXT PRIMARY KEY, move TEXT);")
-    # use window function to pick the top move per fen
-    cur.execute("INSERT OR REPLACE INTO book(fen, move) SELECT fen, move FROM (SELECT fen, move, ROW_NUMBER() OVER (PARTITION BY fen ORDER BY count DESC) AS rn FROM counts) WHERE rn = 1;")
+    # Insert top move per fen using a window function to choose highest count.
+    # This writes one row per FEN (the most-played move). If the counts table is large
+    # this will still be performed on-disk without loading everything into RAM.
+    cur.execute(
+        "INSERT OR REPLACE INTO book(fen, move) SELECT fen, move FROM (SELECT fen, move, ROW_NUMBER() OVER (PARTITION BY fen ORDER BY count DESC) AS rn FROM counts) WHERE rn = 1;"
+    )
     conn.commit()
 
-    # optional: drop counts to save space
+    # Drop the temporary counts table to free space and ensure final DB only contains 'book'
+    print("[build_book_sqlite] Dropping temporary tables to shrink DB...", flush=True)
     cur.execute("DROP TABLE IF EXISTS counts;")
     conn.commit()
-    print("[build_book_sqlite] Book table created. Closing DB.", flush=True)
+
+    # Run VACUUM to reclaim space on disk so DB file doesn't keep freed pages
+    try:
+        print("[build_book_sqlite] Running VACUUM to reclaim space...", flush=True)
+        cur.execute("VACUUM;")
+        conn.commit()
+    except Exception as e:
+        print(f"[build_book_sqlite] VACUUM failed or not supported: {e}", flush=True)
+
+    print("[build_book_sqlite] Book table created and DB compacted. Closing DB.", flush=True)
     cur.close()
     conn.close()
     return

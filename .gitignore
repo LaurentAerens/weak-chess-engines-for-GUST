@@ -212,3 +212,4 @@ test_games/
 *.pgn
 tournament_results.csv
 pairwise_results.csv
+scripts/pgns/opening_book.db
