@@ -210,19 +210,21 @@ jobs:
     - name: Convert Tournament Table to Markdown
       id: tournament_table
       run: |
-        python - <<'PY'
+        python - <<'PY' > table_output.txt
         import csv, sys
 
         rows = []
-        with open('final_release/tournament_results.csv', newline='') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                rows.append(row)
+        try:
+            with open('final_release/tournament_results.csv', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    rows.append(row)
+        except FileNotFoundError:
+            print('| No data |')
+            sys.exit(0)
 
         if not rows:
-            print('table<<EOF', file=sys.stdout)
-            print('| No data |', file=sys.stdout)
-            print('EOF', file=sys.stdout)
+            print('| No data |')
             sys.exit(0)
 
         header = rows[0]
@@ -237,16 +239,14 @@ jobs:
         for r in data:
             md_lines.append(mkrow(r))
 
-        print('table<<EOF')
         for l in md_lines:
             print(l)
-        print('EOF')
         PY
-        echo "table<<EOF" >> $GITHUB_ENV
-        for l in md_lines; do
-            echo "$l" >> $GITHUB_ENV
-        done
-        echo "EOF" >> $GITHUB_ENV
+        
+        # Write the table to GITHUB_OUTPUT using heredoc format
+        echo "table<<EOF" >> $GITHUB_OUTPUT
+        cat table_output.txt >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
       shell: bash
 
