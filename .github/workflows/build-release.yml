@@ -103,14 +103,13 @@ jobs:
         copy "dist\strangler_engine_${{ matrix.os }}.exe" "release\strangler_engine_windows.exe"
         copy "dist\mover_engine_${{ matrix.os }}.exe" "release\mover_engine_windows.exe"
         copy "dist\opening_book_engine_${{ matrix.os }}.exe" "release\opening_book_engine_windows.exe"
-        REM copy opening book into release (if present in repo)
-        if exist "src\engines\book\opening_book.json.gz" (
-          copy "src\engines\book\opening_book.json.gz" "release\opening_book.json.gz"
-        )
-        REM copy sqlite opening book into release (if present in repo)
-        if exist "src\engines\book\opening_book.db" (
-          copy "src\engines\book\opening_book.db" "release\opening_book.db"
-        )
+        # PowerShell syntax for file existence and copying
+        if (Test-Path "src\engines\book\opening_book.json.gz") {
+          Copy-Item "src\engines\book\opening_book.json.gz" "release\opening_book.json.gz"
+        }
+        if (Test-Path "src\engines\book\opening_book.db") {
+          Copy-Item "src\engines\book\opening_book.db" "release\opening_book.db"
+        }
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
