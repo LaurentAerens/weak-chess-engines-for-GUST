@@ -285,8 +285,8 @@ jobs:
             print(l)
         PY
         
-        # Create summary table (top 10) for release notes
-        python - <<'PY' > table_summary.txt
+        # Create split tables for release notes (3 parts to include all engines)
+        python - <<'PY' > table_part1.txt
         import csv, sys
 
         rows = []
@@ -296,11 +296,11 @@ jobs:
                 for row in reader:
                     rows.append(row)
         except FileNotFoundError:
-            print('Download tournament_results.csv or tournament_results.md for full results.')
+            print('Tournament results not available.')
             sys.exit(0)
 
         if not rows:
-            print('Download tournament_results.csv or tournament_results.md for full results.')
+            print('Tournament results not available.')
             sys.exit(0)
 
         header = rows[0]
@@ -308,29 +308,117 @@ jobs:
         
         total_engines = len(data)
         
-        # Show top 10 only
-        top_data = data[:10]
+        # Split into 3 parts - Part 1: engines 1-10
+        part1_data = data[0:10]
 
         def mkrow(r):
             escaped = [str(c).replace('|', '\\|') for c in r]
             return '| ' + ' | '.join(escaped) + ' |'
 
         md_lines = []
-        md_lines.append('### Top 10 Results (Download tournament_results.md for full table with all ' + str(total_engines) + ' engines)')
+        md_lines.append('### Tournament Results (Part 1 of 3: Engines 1-10)')
         md_lines.append('')
         md_lines.append(mkrow(header))
         md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
-        for r in top_data:
+        for r in part1_data:
             md_lines.append(mkrow(r))
 
         for l in md_lines:
             print(l)
         PY
         
-        # Write the summary table to GITHUB_OUTPUT
-        echo "table<<TOURNAMENT_TABLE_EOF" >> $GITHUB_OUTPUT
-        cat table_summary.txt >> $GITHUB_OUTPUT
-        echo "TOURNAMENT_TABLE_EOF" >> $GITHUB_OUTPUT
+        python - <<'PY' > table_part2.txt
+        import csv, sys
+
+        rows = []
+        try:
+            with open('final_release/tournament_results.csv', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    rows.append(row)
+        except FileNotFoundError:
+            print('Tournament results not available.')
+            sys.exit(0)
+
+        if not rows:
+            print('Tournament results not available.')
+            sys.exit(0)
+
+        header = rows[0]
+        data = rows[1:]
+        
+        # Split into 3 parts - Part 2: engines 11-20
+        part2_data = data[10:20]
+
+        def mkrow(r):
+            escaped = [str(c).replace('|', '\\|') for c in r]
+            return '| ' + ' | '.join(escaped) + ' |'
+
+        md_lines = []
+        md_lines.append('### Tournament Results (Part 2 of 3: Engines 11-20)')
+        md_lines.append('')
+        md_lines.append(mkrow(header))
+        md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
+        for r in part2_data:
+            md_lines.append(mkrow(r))
+
+        for l in md_lines:
+            print(l)
+        PY
+        
+        python - <<'PY' > table_part3.txt
+        import csv, sys
+
+        rows = []
+        try:
+            with open('final_release/tournament_results.csv', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    rows.append(row)
+        except FileNotFoundError:
+            print('Tournament results not available.')
+            sys.exit(0)
+
+        if not rows:
+            print('Tournament results not available.')
+            sys.exit(0)
+
+        header = rows[0]
+        data = rows[1:]
+        
+        total_engines = len(data)
+        
+        # Split into 3 parts - Part 3: engines 21 to end
+        part3_data = data[20:]
+
+        def mkrow(r):
+            escaped = [str(c).replace('|', '\\|') for c in r]
+            return '| ' + ' | '.join(escaped) + ' |'
+
+        md_lines = []
+        md_lines.append('### Tournament Results (Part 3 of 3: Engines 21-' + str(total_engines) + ')')
+        md_lines.append('')
+        md_lines.append(mkrow(header))
+        md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
+        for r in part3_data:
+            md_lines.append(mkrow(r))
+
+        for l in md_lines:
+            print(l)
+        PY
+        
+        # Write all three table parts to GITHUB_OUTPUT
+        echo "table_part1<<TOURNAMENT_TABLE_PART1_EOF" >> $GITHUB_OUTPUT
+        cat table_part1.txt >> $GITHUB_OUTPUT
+        echo "TOURNAMENT_TABLE_PART1_EOF" >> $GITHUB_OUTPUT
+        
+        echo "table_part2<<TOURNAMENT_TABLE_PART2_EOF" >> $GITHUB_OUTPUT
+        cat table_part2.txt >> $GITHUB_OUTPUT
+        echo "TOURNAMENT_TABLE_PART2_EOF" >> $GITHUB_OUTPUT
+        
+        echo "table_part3<<TOURNAMENT_TABLE_PART3_EOF" >> $GITHUB_OUTPUT
+        cat table_part3.txt >> $GITHUB_OUTPUT
+        echo "TOURNAMENT_TABLE_PART3_EOF" >> $GITHUB_OUTPUT
 
       shell: bash
 
@@ -386,9 +474,13 @@ jobs:
 
           ## Tournament Results
 
-          ${{ steps.tournament_table.outputs.table }}
+          ${{ steps.tournament_table.outputs.table_part1 }}
 
-          📊 **Full tournament results with all engines are available in the release assets:**
+          ${{ steps.tournament_table.outputs.table_part2 }}
+
+          ${{ steps.tournament_table.outputs.table_part3 }}
+
+          📊 **Full tournament results with all engines are also available in the release assets:**
           - `tournament_results.md` - Full markdown table with all engines
           - `tournament_results.csv` - Raw CSV data
           - `tournament_games.pgn` - All game records in PGN format
