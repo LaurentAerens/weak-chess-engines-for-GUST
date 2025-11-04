@@ -9,6 +9,16 @@ import subprocess
 import shutil
 from pathlib import Path
 
+# Ensure stdout is configured to UTF-8 when possible to avoid UnicodeEncodeError
+# on Windows hosted runners that use legacy encodings. If reconfigure is not
+# available, silently continue — prints will fall back to the console encoding.
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    # Best-effort only; avoid raising from the build helper
+    pass
+
 def run_command(cmd, description):
     """Run a command and handle errors."""
     print(f"⚙️  {description}")
