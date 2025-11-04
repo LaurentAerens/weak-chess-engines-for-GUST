@@ -89,8 +89,37 @@ def main():
             print(f"❌ Script not found: {script_path}")
             continue
         
-        # Build command
-        cmd = f"pyinstaller --onefile --distpath release --name {engine_name} {script_path}"
+        # Prepare PyInstaller options so src package (and engines) are included
+        # Add src to the Python path for PyInstaller so imports like `import engines` resolve
+        extra_paths = "--paths src"
+
+        # Auto-detect python modules under src to add as hidden-imports (helps PyInstaller)
+        hidden_imports = []
+        src_dir = Path('src')
+        if src_dir.exists():
+            for p in src_dir.rglob('*.py'):
+                # build module name relative to src, e.g. src/engines/foo.py -> engines.foo
+                try:
+                    rel = p.relative_to(src_dir)
+                except Exception:
+                    continue
+                module = str(rel).replace(os.path.sep, '.')
+                if module.endswith('.py'):
+                    module = module[:-3]
+                # skip package init modules repeated names
+                if module.endswith('__init__'):
+                    module = module[:-9].rstrip('.')
+                if module:
+                    hidden_imports.append(module)
+
+        hidden_flags = ''
+        if hidden_imports:
+            # dedupe
+            hidden_imports = sorted(set(hidden_imports))
+            hidden_flags = ' '.join(f"--hidden-import {m}" for m in hidden_imports)
+
+        # Build command (include src on path and hidden imports)
+        cmd = f"pyinstaller --onefile --distpath release --name {engine_name} {extra_paths} {hidden_flags} {script_path}"
         
         if run_command(cmd, f"Building {engine_name}"):
             successful_builds += 1

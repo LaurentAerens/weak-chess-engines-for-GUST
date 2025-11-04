@@ -43,38 +43,10 @@ jobs:
 
     - name: Build executables
       run: |
-        # Create dist directory
-        mkdir -p dist
-        
-        # Build each engine
-        pyinstaller --onefile --name random_engine_${{ matrix.os }} scripts/random_engine.py
-        pyinstaller --onefile --name alphabetical_engine_${{ matrix.os }} scripts/alphabetical_engine.py
-        pyinstaller --onefile --name reverse_alphabetical_engine_${{ matrix.os }} scripts/reverse_alphabetical_engine.py
-        pyinstaller --onefile --name pi_engine_${{ matrix.os }} scripts/pi_engine.py
-        pyinstaller --onefile --name euler_engine_${{ matrix.os }} scripts/euler_engine.py
-        pyinstaller --onefile --name suicide_king_engine_${{ matrix.os }} scripts/suicide_king_engine.py
-        pyinstaller --onefile --name blunder_engine_${{ matrix.os }} scripts/blunder_engine.py
-        pyinstaller --onefile --name greedy_capture_engine_${{ matrix.os }} scripts/greedy_capture_engine.py
-        pyinstaller --onefile --name shuffle_engine_${{ matrix.os }} scripts/shuffle_engine.py
-        pyinstaller --onefile --name anti_positional_engine_${{ matrix.os }} scripts/anti_positional_engine.py
-        pyinstaller --onefile --name color_square_engine_${{ matrix.os }} scripts/color_square_engine.py
-        pyinstaller --onefile --name opposite_color_square_engine_${{ matrix.os }} scripts/opposite_color_square_engine.py
-        pyinstaller --onefile --name swarm_engine_${{ matrix.os }} scripts/swarm_engine.py
-        pyinstaller --onefile --name huddle_engine_${{ matrix.os }} scripts/huddle_engine.py
-        pyinstaller --onefile --name runaway_engine_${{ matrix.os }} scripts/runaway_engine.py
-        pyinstaller --onefile --name mirror_y_engine_${{ matrix.os }} scripts/mirror_y_engine.py
-        pyinstaller --onefile --name mirror_x_engine_${{ matrix.os }} scripts/mirror_x_engine.py
-        pyinstaller --onefile --name reverse_start_engine_${{ matrix.os }} scripts/reverse_start_engine.py
-        pyinstaller --onefile --name CCCP_engine_${{ matrix.os }} scripts/CCCP_engine.py
-        pyinstaller --onefile --name passafist_engine_${{ matrix.os }} scripts/passafist_engine.py
-        pyinstaller --onefile --name single_player_engine_${{ matrix.os }} scripts/single_player_engine.py
-        pyinstaller --onefile --name strangler_engine_${{ matrix.os }} scripts/strangler_engine.py
-        pyinstaller --onefile --name mover_engine_${{ matrix.os }} scripts/mover_engine.py
-        pyinstaller --onefile --name opening_book_engine_${{ matrix.os }} scripts/opening_book_engine.py
-        pyinstaller --onefile --name rare_opening_book_engine_${{ matrix.os }} scripts/rare_opening_book_engine.py
-        pyinstaller --onefile --name lawyer_engine_${{ matrix.os }} scripts/lawyer_engine.py
-        pyinstaller --onefile --name criminal_engine_${{ matrix.os }} scripts/criminal_engine.py
-        pyinstaller --onefile --name paralegal_engine_${{ matrix.os }} scripts/paralegal_engine.py
+        # Use the repository build helper which already sets --paths and hidden-imports
+        # This ensures PyInstaller bundles the `src` package (including `engines`) and avoids
+        # ModuleNotFoundError at runtime. It also keeps CI in sync with local builds.
+        python build.py
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
