@@ -51,82 +51,62 @@ jobs:
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        # Create release directory
-        mkdir release
-        
-        # Copy executables and rename with .exe extension
-        copy "dist\random_engine_${{ matrix.os }}.exe" "release\random_engine_windows.exe"
-        copy "dist\alphabetical_engine_${{ matrix.os }}.exe" "release\alphabetical_engine_windows.exe"
-        copy "dist\reverse_alphabetical_engine_${{ matrix.os }}.exe" "release\reverse_alphabetical_engine_windows.exe"
-        copy "dist\pi_engine_${{ matrix.os }}.exe" "release\pi_engine_windows.exe"
-        copy "dist\euler_engine_${{ matrix.os }}.exe" "release\euler_engine_windows.exe"
-        copy "dist\suicide_king_engine_${{ matrix.os }}.exe" "release\suicide_king_engine_windows.exe"
-        copy "dist\blunder_engine_${{ matrix.os }}.exe" "release\blunder_engine_windows.exe"
-        copy "dist\greedy_capture_engine_${{ matrix.os }}.exe" "release\greedy_capture_engine_windows.exe"
-        copy "dist\shuffle_engine_${{ matrix.os }}.exe" "release\shuffle_engine_windows.exe"
-        copy "dist\anti_positional_engine_${{ matrix.os }}.exe" "release\anti_positional_engine_windows.exe"
-        copy "dist\color_square_engine_${{ matrix.os }}.exe" "release\color_square_engine_windows.exe"
-        copy "dist\opposite_color_square_engine_${{ matrix.os }}.exe" "release\opposite_color_square_engine_windows.exe"
-        copy "dist\swarm_engine_${{ matrix.os }}.exe" "release\swarm_engine_windows.exe"
-        copy "dist\huddle_engine_${{ matrix.os }}.exe" "release\huddle_engine_windows.exe"
-        copy "dist\runaway_engine_${{ matrix.os }}.exe" "release\runaway_engine_windows.exe"
-        copy "dist\mirror_y_engine_${{ matrix.os }}.exe" "release\mirror_y_engine_windows.exe"
-        copy "dist\mirror_x_engine_${{ matrix.os }}.exe" "release\mirror_x_engine_windows.exe"
-        copy "dist\reverse_start_engine_${{ matrix.os }}.exe" "release\reverse_start_engine_windows.exe"
-        copy "dist\CCCP_engine_${{ matrix.os }}.exe" "release\CCCP_engine_windows.exe"
-        copy "dist\passafist_engine_${{ matrix.os }}.exe" "release\passafist_engine_windows.exe"
-        copy "dist\single_player_engine_${{ matrix.os }}.exe" "release\single_player_engine_windows.exe"
-        copy "dist\strangler_engine_${{ matrix.os }}.exe" "release\strangler_engine_windows.exe"
-        copy "dist\mover_engine_${{ matrix.os }}.exe" "release\mover_engine_windows.exe"
-        copy "dist\opening_book_engine_${{ matrix.os }}.exe" "release\opening_book_engine_windows.exe"
-        copy "dist\rare_opening_book_engine_${{ matrix.os }}.exe" "release\rare_opening_book_engine_windows.exe"
-        copy "dist\lawyer_engine_${{ matrix.os }}.exe" "release\lawyer_engine_windows.exe"
-        copy "dist\criminal_engine_${{ matrix.os }}.exe" "release\criminal_engine_windows.exe"
-        copy "dist\paralegal_engine_${{ matrix.os }}.exe" "release\paralegal_engine_windows.exe"
+        # Ensure release directory exists (build.py already creates it, but be tolerant)
+        if (-Not (Test-Path "release")) { New-Item -ItemType Directory -Path release | Out-Null }
 
-        # PowerShell syntax for file existence and copying
+        # Copy built executables from the release/ directory produced by build.py
+        # and add a platform suffix so downstream packaging can detect them.
+        $engines = @(
+          'random_engine','alphabetical_engine','reverse_alphabetical_engine','pi_engine','euler_engine',
+          'suicide_king_engine','blunder_engine','greedy_capture_engine','shuffle_engine','anti_positional_engine',
+          'color_square_engine','opposite_color_square_engine','swarm_engine','huddle_engine','runaway_engine',
+          'mirror_y_engine','mirror_x_engine','reverse_start_engine','CCCP_engine','passafist_engine',
+          'single_player_engine','strangler_engine','mover_engine','opening_book_engine','rare_opening_book_engine',
+          'lawyer_engine','criminal_engine','paralegal_engine'
+        )
+
+        foreach ($e in $engines) {
+          $src = Join-Path -Path 'release' -ChildPath ($e + '.exe')
+          $dst = Join-Path -Path 'release' -ChildPath ($e + '_windows.exe')
+          if (Test-Path $src) {
+            Copy-Item -Path $src -Destination $dst -Force -ErrorAction SilentlyContinue
+          }
+        }
+
+        # Copy sqlite opening book into release if present
         if (Test-Path "src\engines\book\opening_book.db") {
-          Copy-Item "src\engines\book\opening_book.db" "release\opening_book.db"
+          Copy-Item "src\engines\book\opening_book.db" "release\opening_book.db" -ErrorAction SilentlyContinue
         }
         if (Test-Path "src\engines\book\opening_book_rare.db") {
-          Copy-Item "src\engines\book\opening_book_rare.db" "release\opening_book_rare.db"
+          Copy-Item "src\engines\book\opening_book_rare.db" "release\opening_book_rare.db" -ErrorAction SilentlyContinue
         }
 
     - name: Prepare artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
-        # Create release directory
-        mkdir -p release
-        
-        # Copy executables with proper naming
-        cp "dist/random_engine_${{ matrix.os }}" "release/random_engine_linux"
-        cp "dist/alphabetical_engine_${{ matrix.os }}" "release/alphabetical_engine_linux"
-        cp "dist/reverse_alphabetical_engine_${{ matrix.os }}" "release/reverse_alphabetical_engine_linux"
-        cp "dist/pi_engine_${{ matrix.os }}" "release/pi_engine_linux"
-        cp "dist/euler_engine_${{ matrix.os }}" "release/euler_engine_linux"
-        cp "dist/suicide_king_engine_${{ matrix.os }}" "release/suicide_king_engine_linux"
-        cp "dist/blunder_engine_${{ matrix.os }}" "release/blunder_engine_linux"
-        cp "dist/greedy_capture_engine_${{ matrix.os }}" "release/greedy_capture_engine_linux"
-        cp "dist/shuffle_engine_${{ matrix.os }}" "release/shuffle_engine_linux"
-        cp "dist/anti_positional_engine_${{ matrix.os }}" "release/anti_positional_engine_linux"
-        cp "dist/color_square_engine_${{ matrix.os }}" "release/color_square_engine_linux"
-        cp "dist/opposite_color_square_engine_${{ matrix.os }}" "release/opposite_color_square_engine_linux"
-        cp "dist/swarm_engine_${{ matrix.os }}" "release/swarm_engine_linux"
-        cp "dist/huddle_engine_${{ matrix.os }}" "release/huddle_engine_linux"
-        cp "dist/runaway_engine_${{ matrix.os }}" "release/runaway_engine_linux"
-        cp "dist/mirror_y_engine_${{ matrix.os }}" "release/mirror_y_engine_linux"
-        cp "dist/mirror_x_engine_${{ matrix.os }}" "release/mirror_x_engine_linux"
-        cp "dist/reverse_start_engine_${{ matrix.os }}" "release/reverse_start_engine_linux"
-        cp "dist/CCCP_engine_${{ matrix.os }}" "release/CCCP_engine_linux"
-        cp "dist/passafist_engine_${{ matrix.os }}" "release/passafist_engine_linux"
-        cp "dist/single_player_engine_${{ matrix.os }}" "release/single_player_engine_linux"
-        cp "dist/strangler_engine_${{ matrix.os }}" "release/strangler_engine_linux"
-        cp "dist/mover_engine_${{ matrix.os }}" "release/mover_engine_linux"
-        cp "dist/opening_book_engine_${{ matrix.os }}" "release/opening_book_engine_linux"
-        cp "dist/rare_opening_book_engine_${{ matrix.os }}" "release/rare_opening_book_engine_linux"
-        cp "dist/lawyer_engine_${{ matrix.os }}" "release/lawyer_engine_linux"
-        cp "dist/criminal_engine_${{ matrix.os }}" "release/criminal_engine_linux"
-        cp "dist/paralegal_engine_${{ matrix.os }}" "release/paralegal_engine_linux"
+        # Ensure release directory exists (build.py already creates it)
+        mkdir -p release || true
+
+        # Copy built executables from release/ and add a platform suffix for packaging
+        engines=(
+          random_engine alphabetical_engine reverse_alphabetical_engine pi_engine euler_engine
+          suicide_king_engine blunder_engine greedy_capture_engine shuffle_engine anti_positional_engine
+          color_square_engine opposite_color_square_engine swarm_engine huddle_engine runaway_engine
+          mirror_y_engine mirror_x_engine reverse_start_engine CCCP_engine passafist_engine
+          single_player_engine strangler_engine mover_engine opening_book_engine rare_opening_book_engine
+          lawyer_engine criminal_engine paralegal_engine
+        )
+
+        for e in "${engines[@]}"; do
+          src="release/$e"
+          dst="release/${e}_linux"
+          if [ -f "$src" ]; then
+            cp "$src" "$dst" || true
+          elif [ -f "$src".exe ]; then
+            # in case a .exe was produced on windows runner and reused
+            cp "$src".exe "$dst" || true
+          fi
+        done
 
         # copy sqlite opening book into release if present
         if [ -f src/engines/book/opening_book.db ]; then
@@ -137,7 +117,7 @@ jobs:
         fi
 
         # Make executables... executable
-        chmod +x release/*
+        chmod +x release/* || true
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

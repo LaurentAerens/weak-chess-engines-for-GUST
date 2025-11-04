@@ -219,7 +219,7 @@ jobs:
     - name: Test PyInstaller build
       run: |
         # Test building one engine to ensure PyInstaller works
-        pyinstaller --onefile --name test_random_engine scripts/random_engine.py
+        pyinstaller --onefile --name test_random_engine --paths src scripts/random_engine.py
         
         # Check if executable was created
         if [ -f "dist/test_random_engine" ]; then
